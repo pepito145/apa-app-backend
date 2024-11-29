@@ -1,3 +1,6 @@
 # Ignorer les dossiers __pycache__ et migrations
 __pycache__/
 migrations/
+backend/__pycache__/
+users/__pycache__/
+users/migrations/
