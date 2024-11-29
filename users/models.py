@@ -9,5 +9,8 @@ class UserLogin(models.Model):
     last_name = models.CharField(max_length=150, blank=True, null=True)  # Champ pour le nom
     date_joined = models.DateTimeField(default=now)  # Champ pour la date d'inscription
 
+    class Meta:
+        db_table = 'users'  # Nouveau nom pour la table
+
     def __str__(self):
         return self.email
