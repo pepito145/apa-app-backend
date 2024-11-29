@@ -1,0 +1,3 @@
+# Ignorer les dossiers __pycache__ et migrations
+__pycache__/
+migrations/
