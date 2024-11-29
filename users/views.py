@@ -11,14 +11,22 @@ class RegisterView(APIView):
     def post(self, request):
         email = request.data.get('email')
         password = request.data.get('password')
+        first_name = request.data.get('first_name')  # Nouveau champ
+        last_name = request.data.get('last_name')  # Nouveau champ
 
         # Vérifie si l'email existe déjà
         if UserLogin.objects.filter(email=email).exists():
-            return Response({"error": "Email already registered"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": "Email déjà utilisé"}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Crée un nouvel utilisateur
-        user = UserLogin(email=email, password=make_password(password))
+        # Crée un nouvel utilisateur avec les champs supplémentaires
+        user = UserLogin(
+            email=email,
+            password=make_password(password),
+            first_name=first_name,
+            last_name=last_name
+        )
         user.save()
+
         return Response({"message": "User registered successfully"}, status=status.HTTP_201_CREATED)
 
 # Connexion
@@ -37,6 +45,6 @@ class LoginView(APIView):
                     "token": str(refresh.access_token)  # Retourne le token d'accès
                 }, status=status.HTTP_200_OK)
             else:
-                return Response({"error": "Invalid password"}, status=status.HTTP_401_UNAUTHORIZED)
+                return Response({"error": "Mot de passe incorrect"}, status=status.HTTP_401_UNAUTHORIZED)
         except UserLogin.DoesNotExist:
-            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"error": "Utilisateur introuvable"}, status=status.HTTP_404_NOT_FOUND)
