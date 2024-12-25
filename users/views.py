@@ -6,6 +6,10 @@ from .models import UserLogin, UsersInfos
 from django.contrib.auth.hashers import make_password, check_password
 from rest_framework_simplejwt.tokens import RefreshToken
 
+from urllib.parse import unquote
+
+
+
 # Inscription
 class RegisterView(APIView):
     def post(self, request):
@@ -79,6 +83,6 @@ class Get_code(APIView):
         code = request.GET.get('code')
         state = request.GET.get('state')
         print(code)
-        user = UserLogin.objects.get(email=state)
+        user = UserLogin.objects.get(email=unquote(state))
         user.code=code
-        return Response({'code': code, 'state': state})
+        return Response({'code': code, 'state': unquote(state)})
