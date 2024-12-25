@@ -7,7 +7,7 @@ from django.contrib.auth.hashers import make_password, check_password
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from urllib.parse import unquote
-
+from rest_framework.exceptions import NotFound
 
 
 # Inscription
@@ -80,9 +80,26 @@ class ClientID(APIView):
         
 class Get_code(APIView):
     def get(self, request):
+        # 获取并解码参数
         code = request.GET.get('code')
         state = request.GET.get('state')
-        print(code)
-        user = UserLogin.objects.get(email=unquote(state))
-        user.code=code
-        return Response({'code': code, 'state': unquote(state)})
+
+        if not code or not state:
+            return Response({'error': 'Missing code or state'}, status=400)
+
+        decoded_email = unquote(state)  # 解码 state 参数，假设它是 email
+        print(decoded_email)
+
+        try:
+            # 尝试查找用户
+            user = UserLogin.objects.get(email=decoded_email)
+            user.code = code
+            user.save()  # 保存 code 到数据库
+            return Response({'code': code, 'state': decoded_email})
+        except UserLogin.DoesNotExist:
+            # 用户未找到，返回 404 错误
+            raise NotFound({'error': f'User with email {decoded_email} not found'})
+
+        except Exception as e:
+            # 捕获其他可能的异常，返回 500 错误
+            return Response({'error': 'An unexpected error occurred', 'details': str(e)}, status=500)
