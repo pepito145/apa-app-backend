@@ -59,3 +59,26 @@ class LoginView(APIView):
                 return Response({"error": "Mot de passe incorrect"}, status=status.HTTP_401_UNAUTHORIZED)
         except UserLogin.DoesNotExist:
             return Response({"error": "Utilisateur introuvable"}, status=status.HTTP_404_NOT_FOUND)
+        
+
+class ClientID(APIView):
+    def post(self, request):
+        email = request.data.get('email')
+        if not email:
+            return Response({'error': 'Email is required'}, status=400)
+        try:
+        # 查询 UserLogin 表中匹配的 email
+            user = UserLogin.objects.get(email=email)
+            return Response({'client_id': user.clientid})
+        except UserLogin.DoesNotExist:
+            return Response({'error': 'User with this email does not exist'}, status=404)
+        
+        
+class Get_code(APIView):
+    def get(request):
+        code = request.GET.get('code')
+        state = request.GET.get('state')
+        print(code)
+        user = UserLogin.objects.get(email=state)
+        user.code=code
+        return Response({'code': code, 'state': state})

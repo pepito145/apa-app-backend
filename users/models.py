@@ -8,6 +8,10 @@ class UserLogin(models.Model):
     first_name = models.CharField(max_length=150, blank=True, null=True)  # Champ pour le prénom
     last_name = models.CharField(max_length=150, blank=True, null=True)  # Champ pour le nom
     date_joined = models.DateTimeField(default=now)  # Champ pour la date d'inscription
+    clientid = models.CharField(max_length=150, blank=True, null=True)  # Permet NULL
+    code = models.CharField(max_length=150, blank=True, null=True)  # Permet NULL
+    access_token = models.CharField(max_length=150, blank=True, null=True)  # Permet NULL
+    refresh_token = models.CharField(max_length=150, blank=True, null=True)  # Permet NULL
 
     class Meta:
         db_table = 'users_login'  # Nouveau nom pour la table
@@ -24,6 +28,7 @@ class UsersInfos(models.Model):
     age = models.IntegerField(blank=True, null=True)
     weight = models.FloatField(blank=True, null=True)
     ipaq_score = models.IntegerField(blank=True, null=True)  # Permet NULL
+
 
     class Meta:
         db_table = 'users_infos'
