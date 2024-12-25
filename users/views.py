@@ -75,7 +75,7 @@ class ClientID(APIView):
         
         
 class Get_code(APIView):
-    def get(request):
+    def get(self, request):
         code = request.GET.get('code')
         state = request.GET.get('state')
         print(code)
