@@ -121,7 +121,7 @@ class Get_code(APIView):
             'grant_type' : "authorization_code",
             'code': code,
             'redirect_uri' : "https://a428-193-54-192-76.ngrok-free.app/backend/api/get_token/",
-            'state' : user.clientid,
+            #'state' : user.clientid,
         }
         try:
             # 发送 POST 请求
