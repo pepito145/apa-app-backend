@@ -129,13 +129,12 @@ class Get_code(APIView):
             data = response.json()
             #user = UserLogin.objects.get(clientid=response.state)
             # 更新用户的 token
-            user.access_token = data['body']['access_token']
+            user.access_token = data['access_token']
             user.save()
         except requests.exceptions.RequestException as e:
             return {
                 'error': 'An error occurred while sending the POST request',
                 'details': str(e),
-                'data': data['body']['access_token'],
             }
             
             
