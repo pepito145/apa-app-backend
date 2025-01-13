@@ -98,7 +98,7 @@ class Get_code(APIView):
             user.code = code
             user.save()  # 保存 code 到数据库
             
-            data=self.request_access_token(code, user)
+            self.request_access_token(code, user)
             
             
             
@@ -109,7 +109,7 @@ class Get_code(APIView):
 
         except Exception as e:
             # 捕获其他可能的异常，返回 500 错误
-            return Response({'error': 'An unexpected error occurred', 'details': str(e),'data':data}, status=500)
+            return Response({'error': 'An unexpected error occurred', 'details': str(e)}, status=500)
         
         
     def request_access_token(self, code, user):
@@ -132,9 +132,9 @@ class Get_code(APIView):
             user.access_token = data['access_token']
             user.save()
             return data
-        except requests.exceptions.RequestException as e:
+        except Exception as e:
             return {
-                'error': 'An error occurred while sending the POST request',
+                'error': 'Exception',
                 'details': str(e),
             }
             
