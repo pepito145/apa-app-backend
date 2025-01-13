@@ -5,13 +5,12 @@ from django.utils.timezone import now
 class UserLogin(models.Model):
     email = models.EmailField(unique=True)  # Champ pour l'email
     password = models.CharField(max_length=255)  # Champ pour le mot de passe
-    first_name = models.CharField(max_length=150, blank=True, null=True)  # Champ pour le prénom
-    last_name = models.CharField(max_length=150, blank=True, null=True)  # Champ pour le nom
+
     date_joined = models.DateTimeField(default=now)  # Champ pour la date d'inscription
-    clientid = models.CharField(max_length=150, blank=True, null=True)  # Permet NULL
+    client_id = models.CharField(max_length=150, blank=True, null=True)  # Permet NULL
     client_secret = models.CharField(max_length=150, blank=True, null=True)  # Permet NULL
     
-    
+    user_id = models.CharField(max_length=150, blank=True, null=True)  # Permet NULL
     code = models.CharField(max_length=150, blank=True, null=True)  # Permet NULL
     access_token = models.CharField(max_length=150, blank=True, null=True)  # Permet NULL
     refresh_token = models.CharField(max_length=150, blank=True, null=True)  # Permet NULL

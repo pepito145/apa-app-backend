@@ -67,7 +67,7 @@ class LoginView(APIView):
             return Response({"error": "Utilisateur introuvable"}, status=status.HTTP_404_NOT_FOUND)
         
 
-class ClientID(APIView):
+class Client_id(APIView):
     def post(self, request):
         email = request.data.get('email')
         if not email:
@@ -75,7 +75,7 @@ class ClientID(APIView):
         try:
         # 查询 UserLogin 表中匹配的 email
             user = UserLogin.objects.get(email=email)
-            return Response({'client_id': user.clientid})
+            return Response({'client_id': user.client_id})
         except UserLogin.DoesNotExist:
             return Response({'error': 'User with this email does not exist'}, status=404)
         
@@ -94,7 +94,7 @@ class Get_code(APIView):
 
         try:
             # 尝试查找用户
-            user = UserLogin.objects.get(clientid=state)
+            user = UserLogin.objects.get(client_id=state)
             user.code = code
             user.save()  # 保存 code 到数据库
             
@@ -116,7 +116,7 @@ class Get_code(APIView):
         url = "https://wbsapi.withings.net/v2/oauth2"  # 替换为目标地址
         payload = {
             'action' : "requesttoken",
-            'client_id' : user.clientid,
+            'client_id' : user.client_id,
             'client_secret' : user.client_secret,
             'grant_type' : "authorization_code",
             'code': code,
@@ -126,8 +126,7 @@ class Get_code(APIView):
             # 发送 POST 请求
             response = requests.post(url, json=payload)        
             data = response.json()
-            #user = UserLogin.objects.get(clientid=response.state)
-            # 更新用户的 token
+
             user.access_token = data['body']['access_token']
             user.refresh_token = data['body']['refresh_token']
             user.save()
