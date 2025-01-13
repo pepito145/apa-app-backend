@@ -130,10 +130,10 @@ class Get_code(APIView):
             # 发送 POST 请求
             response = requests.post(url, json=payload)
             print(response)
-            
+            data = response.json()
             #user = UserLogin.objects.get(clientid=response.state)
             # 更新用户的 token
-            user.access_token = response.access_token
+            user.access_token = data.access_token
             user.save()
         except requests.exceptions.RequestException as e:
             return {
