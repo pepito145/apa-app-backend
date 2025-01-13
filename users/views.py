@@ -92,8 +92,6 @@ class Get_code(APIView):
         if not code or not state:
             return Response({'error': 'Missing code or state'}, status=400)
 
-        print(state)
-
         try:
             # 尝试查找用户
             user = UserLogin.objects.get(clientid=state)
@@ -111,11 +109,10 @@ class Get_code(APIView):
 
         except Exception as e:
             # 捕获其他可能的异常，返回 500 错误
-            return Response({'error': 'An unexpected error occurred', 'details': str(e)}, status=500)
+            return Response({'error': 'An unexpected error occurred', 'details': str(e),'reçu':request}, status=500)
         
         
     def request_access_token(self, code, user):
-        print("start get token")
         url = "https://wbsapi.withings.net/v2/oauth2"  # 替换为目标地址
         payload = {
             'action' : "requesttoken",
@@ -124,20 +121,27 @@ class Get_code(APIView):
             'grant_type' : "authorization_code",
             'code': code,
             'redirect_uri' : "https://a428-193-54-192-76.ngrok-free.app/backend/api/get_token/",
-            
+            'state' : user.clientid,
         }
         try:
             # 发送 POST 请求
-            response = requests.post(url, json=payload)
-            print(response)
+            response = requests.post(url, json=payload)        
             data = response.json()
             #user = UserLogin.objects.get(clientid=response.state)
             # 更新用户的 token
             user.access_token = data.access_token
             user.save()
+            return {'data': data}
         except requests.exceptions.RequestException as e:
             return {
                 'error': 'An error occurred while sending the POST request',
-                'details': str(e)
+                'details': str(e),
+                'data': data,
             }
+            
+            
+class Get_token(APIView):
+    def get(self, request):
+        access_token = request.GET.get('access_token')
+        refresh_token = request.GET.get('refresh_token')
         
