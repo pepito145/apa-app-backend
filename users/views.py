@@ -105,7 +105,7 @@ class Get_code(APIView):
             return Response({'code': code, 'state': state,'access_token':access_token,})
         except UserLogin.DoesNotExist:
             # 用户未找到，返回 404 错误
-            raise NotFound({'error': f'User with id {state} not found'})
+            raise NotFound({'error': f'User with id {state} not found','reçu':request.json()})
 
         except Exception as e:
             # 捕获其他可能的异常，返回 500 错误
@@ -120,8 +120,8 @@ class Get_code(APIView):
             'client_secret' : user.client_secret,
             'grant_type' : "authorization_code",
             'code': code,
-            'redirect_uri' : "https://a428-193-54-192-76.ngrok-free.app/backend/api/get_token/",
-            #'state' : user.clientid,
+            'redirect_uri' : "https://a428-193-54-192-76.ngrok-free.app/backend/api/get_code/",
+            'state' : user.clientid,
         }
         try:
             # 发送 POST 请求
