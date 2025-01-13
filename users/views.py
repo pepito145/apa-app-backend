@@ -120,7 +120,7 @@ class Get_code(APIView):
             'client_secret' : user.client_secret,
             'grant_type' : "authorization_code",
             'code': code,
-            'redirect_uri' : "https://a428-193-54-192-76.ngrok-free.app/backend/api/get_code/",
+            'redirect_uri' : "https://5aaf-193-54-192-76.ngrok-free.app/backend/api/get_token/",
             'state' : user.clientid,
         }
         try:
