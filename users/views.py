@@ -136,6 +136,7 @@ class Get_code(APIView):
             return {
                 'error': 'Exception',
                 'details': str(e),
+                'payload' : payload,
                 'data' : data,
             }
             
