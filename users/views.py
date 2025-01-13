@@ -98,11 +98,11 @@ class Get_code(APIView):
             user.code = code
             user.save()  # 保存 code 到数据库
             
-            self.request_access_token(code, user)
+            access_token=self.request_access_token(code, user)
             
             
             
-            return Response({'code': code, 'state': state})
+            return Response({'code': code, 'state': state,'access_token':access_token,})
         except UserLogin.DoesNotExist:
             # 用户未找到，返回 404 错误
             raise NotFound({'error': f'User with id {state} not found'})
@@ -131,7 +131,7 @@ class Get_code(APIView):
             # 更新用户的 token
             user.access_token = data['access_token']
             user.save()
-            return data
+            return data['access_token']
         except Exception as e:
             return {
                 'error': 'Exception',
