@@ -79,13 +79,13 @@ WSGI_APPLICATION = "backend.wsgi.application"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
+   'default': {
         'ENGINE': 'django.db.backends.mysql',  # Utilisation de MySQL
-        'NAME': 'apa-app-test',             # Nom de ta base MySQL
-        'USER': 'root',            # Ton utilisateur MySQL
-        'PASSWORD': 'root',       # Mot de passe MySQL
+        'NAME': 'sys',             # Nom de ta base MySQL
+        'USER': 'a',            # Ton utilisateur MySQL
+        'PASSWORD': '12345678',       # Mot de passe MySQL
         'HOST': '127.0.0.1',                  # Adresse de ton serveur MySQL
-        'PORT': '8889',                       # Port par défaut pour MySQL
+        'PORT': '3306',                       # Port par défaut pour MySQL
     }
 }
 

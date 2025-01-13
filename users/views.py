@@ -5,6 +5,8 @@ from rest_framework import status
 from .models import UserLogin, UsersInfos
 from django.contrib.auth.hashers import make_password, check_password
 from rest_framework_simplejwt.tokens import RefreshToken
+import requests
+
 
 from urllib.parse import unquote
 from rest_framework.exceptions import NotFound
@@ -78,6 +80,9 @@ class ClientID(APIView):
             return Response({'error': 'User with this email does not exist'}, status=404)
         
         
+        
+        
+        
 class Get_code(APIView):
     def get(self, request):
         # 获取并解码参数
@@ -94,6 +99,11 @@ class Get_code(APIView):
             user = UserLogin.objects.get(clientid=state)
             user.code = code
             user.save()  # 保存 code 到数据库
+            
+            self.request_access_token(code, user)
+            
+            
+            
             return Response({'code': code, 'state': state})
         except UserLogin.DoesNotExist:
             # 用户未找到，返回 404 错误
@@ -102,3 +112,33 @@ class Get_code(APIView):
         except Exception as e:
             # 捕获其他可能的异常，返回 500 错误
             return Response({'error': 'An unexpected error occurred', 'details': str(e)}, status=500)
+        
+        
+    def request_access_token(self, code, user):
+        print("start get token")
+        url = "https://wbsapi.withings.net/v2/oauth2"  # 替换为目标地址
+        payload = {
+            'action' : "requesttoken",
+            'client_id' : user.clientid,
+            'client_secret' : user.client_secret,
+            'grant_type' : "authorization_code",
+            'code': code,
+            'redirect_uri' : "https://a428-193-54-192-76.ngrok-free.app/backend/api/get_token/",
+            'state' : user.clientid,
+            
+        }
+        try:
+            # 发送 POST 请求
+            response = requests.post(url, json=payload)
+            print(response)
+            
+            user = UserLogin.objects.get(clientid=response.state)
+            # 更新用户的 token
+            user.access_token = response.access_token
+            user.save()
+        except requests.exceptions.RequestException as e:
+            return {
+                'error': 'An error occurred while sending the POST request',
+                'details': str(e)
+            }
+        

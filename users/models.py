@@ -9,6 +9,9 @@ class UserLogin(models.Model):
     last_name = models.CharField(max_length=150, blank=True, null=True)  # Champ pour le nom
     date_joined = models.DateTimeField(default=now)  # Champ pour la date d'inscription
     clientid = models.CharField(max_length=150, blank=True, null=True)  # Permet NULL
+    client_secret = models.CharField(max_length=150, blank=True, null=True)  # Permet NULL
+    
+    
     code = models.CharField(max_length=150, blank=True, null=True)  # Permet NULL
     access_token = models.CharField(max_length=150, blank=True, null=True)  # Permet NULL
     refresh_token = models.CharField(max_length=150, blank=True, null=True)  # Permet NULL
