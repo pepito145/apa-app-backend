@@ -109,7 +109,7 @@ class Get_code(APIView):
 
         except Exception as e:
             # 捕获其他可能的异常，返回 500 错误
-            return Response({'error': 'An unexpected error occurred', 'details': str(e),'reçu':request}, status=500)
+            return Response({'error': 'An unexpected error occurred', 'details': str(e),'code':code}, status=500)
         
         
     def request_access_token(self, code, user):
