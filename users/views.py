@@ -124,7 +124,6 @@ class Get_code(APIView):
             'grant_type' : "authorization_code",
             'code': code,
             'redirect_uri' : "https://a428-193-54-192-76.ngrok-free.app/backend/api/get_token/",
-            'state' : user.clientid,
             
         }
         try:
@@ -132,7 +131,7 @@ class Get_code(APIView):
             response = requests.post(url, json=payload)
             print(response)
             
-            user = UserLogin.objects.get(clientid=response.state)
+            #user = UserLogin.objects.get(clientid=response.state)
             # 更新用户的 token
             user.access_token = response.access_token
             user.save()
