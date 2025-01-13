@@ -40,9 +40,11 @@ INSTALLED_APPS = [
     "users",
     'rest_framework',
     'corsheaders',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -53,7 +55,7 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
 
 ]
-
+INTERNAL_IPS = ['0.0.0.0','127.0.0.1', '10.0.2.2'] 
 ROOT_URLCONF = "backend.urls"
 
 TEMPLATES = [
