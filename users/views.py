@@ -107,6 +107,7 @@ class Get_code(APIView):
             user.save()  # 保存 code 到数据库
             
             access_token=self.request_access_token(code, user)
+            self.notify(access_token)
             
             return Response({'code': code, 'state': state,'access_token':access_token,})
         except UserLogin.DoesNotExist:
@@ -147,6 +148,24 @@ class Get_code(APIView):
                 'data' : data,
             }
 
+    def notify(self, access_token):
+        url = "https://wbsapi.withings.net/notify"  # 替换为目标地址
+        payload = {
+            'action' : "get",
+            'callbackurl' : "https://5aaf-193-54-192-76.ngrok-free.app/backend/api/get_activity/",
+        }
+        headers = {
+            'Authorization': f'Bearer {access_token}'
+        }
+        try:
+            # 发送 POST 请求
+            response = requests.post(url, json=payload, headers=headers)        
+            data = response.json()
+
+            return None
+        except Exception as e:
+            return {
+                'error': 'Exception'}
 
 
             
