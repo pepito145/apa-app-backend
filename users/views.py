@@ -155,7 +155,7 @@ class post_step(APIView):
         }
         
         
-@csrf_exempt 
+
 class Get_activity(APIView):
     def post(self, request):
         if request.method == 'POST':
