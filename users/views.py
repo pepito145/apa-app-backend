@@ -2,11 +2,15 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .models import UserLogin, UsersInfos
+from .models import UserLogin, UsersInfos, Activity
 from django.contrib.auth.hashers import make_password, check_password
 from rest_framework_simplejwt.tokens import RefreshToken
 import requests
-
+from django.utils.timezone import now
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+from datetime import datetime
 
 from urllib.parse import unquote
 from rest_framework.exceptions import NotFound
@@ -96,11 +100,10 @@ class Get_code(APIView):
             # 尝试查找用户
             user = UserLogin.objects.get(client_id=state)
             user.code = code
+            
             user.save()  # 保存 code 到数据库
             
             access_token=self.request_access_token(code, user)
-            
-            
             
             return Response({'code': code, 'state': state,'access_token':access_token,})
         except UserLogin.DoesNotExist:
@@ -129,6 +132,7 @@ class Get_code(APIView):
 
             user.access_token = data['body']['access_token']
             user.refresh_token = data['body']['refresh_token']
+            user.user_id = data['body']['userid']
             user.save()
             
             return data['access_token']
@@ -139,10 +143,33 @@ class Get_code(APIView):
                 'payload' : payload,
                 'data' : data,
             }
+
+
+
             
-            
-class Get_token(APIView):
+class post_step(APIView):
     def get(self, request):
-        access_token = request.GET.get('access_token')
-        refresh_token = request.GET.get('refresh_token')
+        url = 'https://wbsapi.withings.net/v2/measure'
+        payload = {
+            'action' : "getactivity",
+        }
         
+        
+@csrf_exempt 
+class get_activity(APIView):
+    def post(self, request):
+        if request.method == 'POST':
+            try:
+                data = json.loads(request.body.decode('utf-8'))
+                user_id = data.get('userid')
+                meastypes = data.get('meastypes')
+                date=datetime.fromtimestamp(data.get('date'))
+                activity = Activity.objects.create(
+                    user_id=user_id,
+                    activity=meastypes,
+                    date=date,
+                )
+            except json.JSONDecodeError:
+                return JsonResponse({'status': 'error', 'message': 'Invalid JSON'}, status=400)
+        else:
+            return JsonResponse({'status': 'error', 'message': 'Invalid method'}, status=405)
