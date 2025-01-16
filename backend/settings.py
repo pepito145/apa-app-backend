@@ -134,3 +134,24 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+        'file': {  # 文件输出
+            'class': 'logging.FileHandler',
+            'filename': 'django_debug.log',  # 日志文件路径
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'file'],  # 同时输出到控制台和文件
+            'level': 'DEBUG',
+        },
+    },
+}

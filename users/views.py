@@ -11,11 +11,11 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 from datetime import datetime
-
+import logging
 from urllib.parse import unquote
 from rest_framework.exceptions import NotFound
 
-
+logger = logging.getLogger('django')
 # Inscription
 class RegisterView(APIView):
     def post(self, request):
@@ -92,7 +92,10 @@ class Get_code(APIView):
         # 获取并解码参数
         code = request.GET.get('code')
         state = request.GET.get('state')
-
+        
+        logger.debug("request: ",request)
+        logger.debug("state: ",state)
+        
         if not code or not state:
             return Response({'error': 'Missing code or state'}, status=400)
 
