@@ -192,6 +192,8 @@ class Get_activity(APIView):
                     date=date,
                 )
             except json.JSONDecodeError:
-                return JsonResponse({'status': 'error', 'message': 'Invalid JSON'}, status=400)
+                JsonResponse({"status": "success"}, status=200)
+                #return JsonResponse({'status': 'error', 'message': 'Invalid JSON'}, status=400)
         else:
-            return JsonResponse({'status': 'error', 'message': 'Invalid method'}, status=405)
+            JsonResponse({"status": "success"}, status=200)
+            #return JsonResponse({'status': 'error', 'message': 'Invalid method'}, status=405)
