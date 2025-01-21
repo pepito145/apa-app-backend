@@ -5,14 +5,16 @@ from django.utils.timezone import now
 class UserLogin(models.Model):
     email = models.EmailField(unique=True)  # Champ pour l'email
     password = models.CharField(max_length=255)  # Champ pour le mot de passe
-    first_name = models.CharField(max_length=150, blank=True, null=True)  # Champ pour le prénom
-    last_name = models.CharField(max_length=150, blank=True, null=True)  # Champ pour le nom
+
     date_joined = models.DateTimeField(default=now)  # Champ pour la date d'inscription
-    clientid = models.CharField(max_length=150, blank=True, null=True)  # Permet NULL
+    client_id = models.CharField(max_length=150, blank=True, null=True)  # Permet NULL
+    client_secret = models.CharField(max_length=150, blank=True, null=True)  # Permet NULL
+    
+    user_id = models.CharField(max_length=150, blank=True, null=True)  # Permet NULL
     code = models.CharField(max_length=150, blank=True, null=True)  # Permet NULL
     access_token = models.CharField(max_length=150, blank=True, null=True)  # Permet NULL
     refresh_token = models.CharField(max_length=150, blank=True, null=True)  # Permet NULL
-
+    updated_at = models.DateTimeField(auto_now=True)
     class Meta:
         db_table = 'users_login'  # Nouveau nom pour la table
 
@@ -32,8 +34,17 @@ class UsersInfos(models.Model):
 
     class Meta:
         db_table = 'users_infos'
-
-# Physiological data model
+        
+class Activity(models.Model):
+    user_id = models.CharField(max_length=150, blank=True, null=True)  # Permet NULL
+    start_date = models.DateTimeField(null=True)
+    end_date = models.DateTimeField(null=True)
+    date = models.DateTimeField(null=True)
+    activity = models.CharField(max_length=20, blank=True, null=True)
+    
+    class Meta:
+        db_table = 'activity'
+    
 class Physio(models.Model):
     email = models.OneToOneField(InfoUser, on_delete=models.CASCADE, primary_key=True, related_name='physio')
     date = models.DateTimeField(default=now)  # Record date
@@ -52,21 +63,6 @@ class BPM(models.Model):
 
     class Meta:
         db_table = 'bpm'
-
-# Session history model
-class SessionsHist(models.Model):
-    email = models.ForeignKey(InfoUser, on_delete=models.CASCADE, related_name='sessions_hist')
-    start_date = models.DateTimeField()  # Session start time
-    duration = models.IntegerField()  # Session duration
-    calories = models.IntegerField(blank=True, null=True)  # Calories burned in the session
-    nb_ex_comp = models.IntegerField()  # Number of exercises completed
-    pain = models.IntegerField()  # Pain level reported
-    user_difficulty = models.IntegerField()  # User's perceived difficulty
-    ex_id = models.CharField(max_length=255)  # Exercise ID
-
-    class Meta:
-        db_table = 'sessions_hist'
-        unique_together = ('email', 'start_date')  # Composite primary key
 
 # Sessions model
 class Sessions(models.Model):
