@@ -4,3 +4,6 @@ migrations/
 backend/__pycache__/
 users/__pycache__/
 users/migrations/
+backend/settings.py
+backend/__init__.py
+users/__init__.py

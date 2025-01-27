@@ -40,9 +40,11 @@ INSTALLED_APPS = [
     "users",
     'rest_framework',
     'corsheaders',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -53,7 +55,7 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
 
 ]
-
+INTERNAL_IPS = ['0.0.0.0','127.0.0.1', '10.0.2.2'] 
 ROOT_URLCONF = "backend.urls"
 
 TEMPLATES = [
@@ -79,13 +81,13 @@ WSGI_APPLICATION = "backend.wsgi.application"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
+   'default': {
         'ENGINE': 'django.db.backends.mysql',  # Utilisation de MySQL
-        'NAME': 'apa-app-test',             # Nom de ta base MySQL
-        'USER': 'root',            # Ton utilisateur MySQL
-        'PASSWORD': 'root',       # Mot de passe MySQL
+        'NAME': 'sys',             # Nom de ta base MySQL
+        'USER': 'a',            # Ton utilisateur MySQL
+        'PASSWORD': '12345678',       # Mot de passe MySQL
         'HOST': '127.0.0.1',                  # Adresse de ton serveur MySQL
-        'PORT': '8889',                       # Port par défaut pour MySQL
+        'PORT': '3306',                       # Port par défaut pour MySQL
     }
 }
 
@@ -132,3 +134,24 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+        'file': {  # 文件输出
+            'class': 'logging.FileHandler',
+            'filename': 'django_debug.log',  # 日志文件路径
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'file'],  # 同时输出到控制台和文件
+            'level': 'DEBUG',
+        },
+    },
+}
