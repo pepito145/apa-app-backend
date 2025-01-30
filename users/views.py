@@ -180,7 +180,7 @@ class post_step(APIView):
 
 class Get_activity(APIView):
     def post(self, request):
-        if request.method == 'POST':
+        if request.method in ["POST", "HEAD"]:
             try:
                 data = json.loads(request.body.decode('utf-8'))
                 user_id = data.get('userid')
