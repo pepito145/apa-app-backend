@@ -41,3 +41,51 @@ class Activity(models.Model):
     end_date = models.DateTimeField(null=True)
     date = models.DateTimeField(null=True)
     activity = models.CharField(max_length=20, blank=True, null=True)
+    
+    class Meta:
+        db_table = 'activity'
+    
+class Physio(models.Model):
+    email = models.OneToOneField(InfoUser, on_delete=models.CASCADE, primary_key=True, related_name='physio')
+    date = models.DateTimeField(default=now)  # Record date
+    steps = models.IntegerField(blank=True, null=True)  # Steps
+    calories = models.IntegerField(blank=True, null=True)  # Calories burned
+    bpm_avrg = models.IntegerField(blank=True, null=True)  # Average BPM
+
+    class Meta:
+        db_table = 'physio'
+
+# BPM data model
+class BPM(models.Model):
+    email = models.ForeignKey(Physio, on_delete=models.CASCADE, related_name='bpm')
+    bpm = models.IntegerField(blank=True, null=True)  # BPM value
+    time = models.TimeField()  # Timestamp of the BPM reading
+
+    class Meta:
+        db_table = 'bpm'
+
+# Sessions model
+class Sessions(models.Model):
+    ses_id = models.AutoField(primary_key=True)  # Unique session ID
+    ex_id = models.OneToOneField(SessionsHist, on_delete=models.CASCADE, unique=True, related_name='session')
+    ses_difficulty = models.IntegerField()  # Session difficulty
+
+    class Meta:
+        db_table = 'sessions'
+
+# Exercise sheets model
+class ExerciseSheets(models.Model):
+    id = models.AutoField(primary_key=True)  # Unique ID for the exercise
+    image_src = models.URLField()  # URL for the exercise image
+    consigne = models.TextField()  # Instructions for the exercise
+
+    class Meta:
+        db_table = 'exercise_sheets'
+
+# Encouragements model
+class Encouragements(models.Model):
+    id = models.AutoField(primary_key=True)  # Unique ID for the message
+    message = models.TextField()  # Encouragement message
+
+    class Meta:
+        db_table = 'encouragements'
