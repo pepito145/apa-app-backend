@@ -185,8 +185,8 @@ class Get_activity(APIView):
             logger.debug(dict(request.POST))
             
             user_id = request.POST.get('userid')
-            meastypes = request.POST.get('meastypes')
-            timestamp = request.POST.get('date')
+            meastypes = request.POST.get('appli')
+            timestamp = request.POST.get('startdate')
             activity = Activity.objects.create(
                 user_id=user_id,
                 activity=meastypes,
