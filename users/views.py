@@ -223,8 +223,8 @@ class Get_activity(APIView):
             return JsonResponse({'status': 'error', 'message': 'Invalid JSON'}, status=400)
         
 def refresh_token(user):
-    time_difference = datetime.now() - user.last_updated
-    if time_difference > timedelta(hours=3):
+    time_difference = datetime.now() - user.updated_at
+    if time_difference > timedelta(hours=0):
         url = "https://wbsapi.withings.net/v2/oauth2"  # 替换为目标地址
         payload = {
             'action' : "requesttoken",
