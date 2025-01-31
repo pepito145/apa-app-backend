@@ -14,6 +14,7 @@ from datetime import datetime, timedelta
 import logging
 from urllib.parse import unquote
 from rest_framework.exceptions import NotFound
+from django.utils import timezone
 
 logger = logging.getLogger('django')
 # Inscription
@@ -223,7 +224,7 @@ class Get_activity(APIView):
             return JsonResponse({'status': 'error', 'message': 'Invalid JSON'}, status=400)
         
 def refresh_token(user):
-    time_difference = datetime.now() - user.updated_at
+    time_difference = timezone.now() - user.updated_at
     if time_difference > timedelta(hours=0):
         url = "https://wbsapi.withings.net/v2/oauth2"  # 替换为目标地址
         payload = {
