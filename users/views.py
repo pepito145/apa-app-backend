@@ -181,8 +181,8 @@ class post_step(APIView):
 class Get_activity(APIView):
     def post(self, request):
         try:
-            logger.debug(request)
-            logger.debug(request.POST.get('userid'))
+
+            logger.debug(json.loads(request.body.decode('utf-8')))
             
             user_id = request.POST.get('userid')
             meastypes = request.POST.get('meastypes')
