@@ -189,6 +189,7 @@ class Get_activity(APIView):
             date = request.POST.get('date')
             
             if appli==16:
+                logger.debug("+++++++++++++++++++++++++++ try to pull workout +++++++++++++++++++++++++++++++++++")
                 user = UserLogin.objects.get(user_id=user_id)
                 url = "https://wbsapi.withings.net/v2/measure"  # 替换为目标地址
                 payload = {
@@ -202,7 +203,8 @@ class Get_activity(APIView):
                 }
                 try:
                     # 发送 POST 请求
-                    response = requests.post(url, json=payload)        
+                    logger.debug("+++++++++++++++++++++++++++ workout response +++++++++++++++++++++++++++++++++++")
+                    response = requests.post(url, json=payload, headers=headers)        
                     data = response.json()
                     logger.debug(data)
                     
