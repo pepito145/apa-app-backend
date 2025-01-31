@@ -46,7 +46,7 @@ class Activity(models.Model):
         db_table = 'activity'
     
 class Physio(models.Model):
-    email = models.OneToOneField(InfoUser, on_delete=models.CASCADE, primary_key=True, related_name='physio')
+    email = models.OneToOneField(UsersInfos, on_delete=models.CASCADE, primary_key=True, related_name='physio')
     date = models.DateTimeField(default=now)  # Record date
     steps = models.IntegerField(blank=True, null=True)  # Steps
     calories = models.IntegerField(blank=True, null=True)  # Calories burned
@@ -67,7 +67,7 @@ class BPM(models.Model):
 # Sessions model
 class Sessions(models.Model):
     ses_id = models.AutoField(primary_key=True)  # Unique session ID
-    ex_id = models.OneToOneField(SessionsHist, on_delete=models.CASCADE, unique=True, related_name='session')
+    #ex_id = models.OneToOneField(SessionsHist, on_delete=models.CASCADE, unique=True, related_name='session')
     ses_difficulty = models.IntegerField()  # Session difficulty
 
     class Meta:
