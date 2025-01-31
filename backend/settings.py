@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     "users",
     'rest_framework',
     'corsheaders',
-    'debug_toolbar',
+    #'debug_toolbar',
 ]
 
 MIDDLEWARE = [
