@@ -187,11 +187,11 @@ class Get_activity(APIView):
             user_id = request.POST.get('userid')
             appli = request.POST.get('appli')
             date = request.POST.get('date')
-            
-            if appli==16:
+            logger.debug("+++++++++++++++++++++++++++ new activity +++++++++++++++++++++++++++++++++++")
+            if int(appli)==16:
                 logger.debug("+++++++++++++++++++++++++++ try to pull workout +++++++++++++++++++++++++++++++++++")
                 user = UserLogin.objects.get(user_id=user_id)
-                url = "https://wbsapi.withings.net/v2/measure"  # 替换为目标地址
+                url = "https://wbsapi.withings.net/v2/measure"
                 payload = {
                     'action' : "getworkouts",
                     'lastupdate' : date,
@@ -217,7 +217,8 @@ class Get_activity(APIView):
                         'payload' : payload,
                         'data' : data,
                     }
-
+            else:
+                
         except json.JSONDecodeError:
             return JsonResponse({'status': 'error', 'message': 'Invalid JSON'}, status=400)
         
