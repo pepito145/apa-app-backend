@@ -10,7 +10,7 @@ from django.utils.timezone import now
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 import logging
 from urllib.parse import unquote
 from rest_framework.exceptions import NotFound
@@ -84,7 +84,7 @@ class Client_id(APIView):
             return Response({'error': 'User with this email does not exist'}, status=404)
         
         
-        
+
         
         
 class Get_code(APIView):
@@ -176,7 +176,7 @@ class post_step(APIView):
             'action' : "getactivity",
         }
         
-        
+    
 
 class Get_activity(APIView):
     def post(self, request):
@@ -185,13 +185,66 @@ class Get_activity(APIView):
             logger.debug(dict(request.POST))
             
             user_id = request.POST.get('userid')
-            meastypes = request.POST.get('appli')
-            timestamp = request.POST.get('startdate')
-            activity = Activity.objects.create(
-                user_id=user_id,
-                activity=meastypes,
-                date=timestamp,
-            )
-            return JsonResponse({"status": "success"}, status=200)
+            appli = request.POST.get('appli')
+            date = request.POST.get('date')
+            
+            if appli==16:
+                user = UserLogin.objects.get(user_id=user_id)
+                url = "https://wbsapi.withings.net/v2/measure"  # 替换为目标地址
+                payload = {
+                    'action' : "getworkouts",
+                    'lastupdate' : date,
+                    'data_fields' : "calories,intensity,manual_distance,manual_calories,hr_average,hr_min,hr_max,hr_zone_0,hr_zone_1,hr_zone_2,hr_zone_3,pause_duration,algo_pause_duration,spo2_average,steps,distance,elevation,pool_laps,strokes,pool_length",
+                }
+                refresh_token(user)
+                headers = {
+                    'Authorization': f'Bearer {user.access_token}'
+                }
+                try:
+                    # 发送 POST 请求
+                    response = requests.post(url, json=payload)        
+                    data = response.json()
+                    logger.debug(data)
+                    
+                    
+                    return JsonResponse({"status": "success"}, status=200)
+                except Exception as e:
+                    return {
+                        'error': 'Exception',
+                        'details': str(e),
+                        'payload' : payload,
+                        'data' : data,
+                    }
+
         except json.JSONDecodeError:
             return JsonResponse({'status': 'error', 'message': 'Invalid JSON'}, status=400)
+        
+def refresh_token(user):
+    time_difference = datetime.now() - user.last_updated
+    if time_difference > timedelta(hours=3):
+        url = "https://wbsapi.withings.net/v2/oauth2"  # 替换为目标地址
+        payload = {
+            'action' : "requesttoken",
+            'client_id' : user.client_id,
+            'client_secret' : user.client_secret,
+            'grant_type' : "refresh_token",
+            'refresh_token' : user.refresh_token,
+        }
+
+        try:
+            # 发送 POST 请求
+            response = requests.post(url, json=payload)        
+            data = response.json()
+
+            user.access_token = data['body']['access_token']
+            user.refresh_token = data['body']['refresh_token']
+            user.save()
+            
+            return JsonResponse({"status": "success"}, status=200)
+        except Exception as e:
+            return {
+                'error': 'Exception',
+                'details': str(e),
+                'payload' : payload,
+                'data' : data,
+            }
