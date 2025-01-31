@@ -218,7 +218,7 @@ class Get_activity(APIView):
                         'data' : data,
                     }
             else:
-                
+                pass
         except json.JSONDecodeError:
             return JsonResponse({'status': 'error', 'message': 'Invalid JSON'}, status=400)
         
