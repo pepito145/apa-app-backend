@@ -195,8 +195,8 @@ class Get_activity(APIView):
                 url = "https://wbsapi.withings.net/v2/measure"
                 payload = {
                     'action' : "getworkouts",
-                    'lastupdate' : date,
-                    'data_fields' : "calories,intensity,manual_distance,manual_calories,hr_average,hr_min,hr_max,hr_zone_0,hr_zone_1,hr_zone_2,hr_zone_3,pause_duration,algo_pause_duration,spo2_average,steps,distance,elevation,pool_laps,strokes,pool_length",
+                    'lastupdate' : int(timezone.now().timestamp())-300,
+                    #'data_fields' : "calories,intensity,manual_distance,manual_calories,hr_average,hr_min,hr_max,hr_zone_0,hr_zone_1,hr_zone_2,hr_zone_3,pause_duration,algo_pause_duration,spo2_average,steps,distance,elevation,pool_laps,strokes,pool_length",
                 }
                 refresh_token(user)
                 headers = {
@@ -241,7 +241,6 @@ def refresh_token(user):
             data = response.json()
 
             user.access_token = data['body']['access_token']
-            user.refresh_token = data['body']['refresh_token']
             user.save()
             
             return JsonResponse({"status": "success"}, status=200)
