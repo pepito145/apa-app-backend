@@ -226,7 +226,7 @@ class Get_activity(APIView):
 def refresh_token(user):
     time_difference = timezone.now() - user.updated_at
     if time_difference > timedelta(hours=0):
-        url = "https://wbsapi.withings.net/v2/oauth2"  # 替换为目标地址
+        url = "https://wbsapi.withings.net/v2/oauth2"
         payload = {
             'action' : "requesttoken",
             'client_id' : user.client_id,
@@ -241,6 +241,8 @@ def refresh_token(user):
             data = response.json()
 
             user.access_token = data['body']['access_token']
+            logger.debug('+++++++++++++++ get new token +++++++++++++++++')
+            logger.debug(data['body']['access_token'])
             user.save()
             
             return JsonResponse({"status": "success"}, status=200)
