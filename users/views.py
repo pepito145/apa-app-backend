@@ -182,7 +182,7 @@ class Get_activity(APIView):
     def post(self, request):
         if request.method in ["POST", "HEAD"]:
             try:
-                logger.debug(request)
+                logger.debug(request.body.decode('utf-8'))
                 data = json.loads(request.body.decode('utf-8'))
                 
                 user_id = data.get('userid')
