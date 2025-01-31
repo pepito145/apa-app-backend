@@ -180,21 +180,18 @@ class post_step(APIView):
 
 class Get_activity(APIView):
     def post(self, request):
-        if request.method in ["POST", "HEAD"]:
-            try:
-                logger.debug(request.body.decode('utf-8'))
-                data = json.loads(request.body.decode('utf-8'))
-                
-                user_id = data.get('userid')
-                meastypes = data.get('meastypes')
-                date=datetime.fromtimestamp(data.get('date'))
-                activity = Activity.objects.create(
-                    user_id=user_id,
-                    activity=meastypes,
-                    date=date,
-                )
-                return JsonResponse({"status": "success"}, status=200)
-            except json.JSONDecodeError:
-                return JsonResponse({'status': 'error', 'message': 'Invalid JSON'}, status=400)
-        else:
-            return JsonResponse({'status': 'error', 'message': 'Invalid method'}, status=405)
+        try:
+            logger.debug(request)
+            logger.debug(request.POST.get('userid'))
+            
+            user_id = request.POST.get('userid')
+            meastypes = request.POST.get('meastypes')
+            timestamp = request.POST.get('date')
+            activity = Activity.objects.create(
+                user_id=user_id,
+                activity=meastypes,
+                date=timestamp,
+            )
+            return JsonResponse({"status": "success"}, status=200)
+        except json.JSONDecodeError:
+            return JsonResponse({'status': 'error', 'message': 'Invalid JSON'}, status=400)
