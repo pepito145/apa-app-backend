@@ -287,6 +287,7 @@ def refresh_token(user):
             data = response.json()
 
             user.access_token = data['body']['access_token']
+            user.refresh_token = data['body']['refresh_token']
             logger.debug('+++++++++++++++ get new token +++++++++++++++++')
             logger.debug(data['body']['access_token'])
             user.save()
