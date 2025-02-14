@@ -257,7 +257,7 @@ class Get_activity(APIView):
                             time_difference = abs(seance_time - startdate_dt)
                             logger.debug("time_difference")
                             logger.debug(time_difference)
-                            if time_difference <= timedelta(minutes=60):
+                            if time_difference <= timedelta(minutes=5):
                                 a.seance_id = seance.id
                                 logger.debug("+++++found++++")
                                 break
