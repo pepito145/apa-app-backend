@@ -192,6 +192,7 @@ class get_seance(APIView):
                 totalExercises = totalExercises,
                 time = datetime.fromtimestamp(time).date(),
             )
+        logger.debug(seance)
         seance.save()
 
 class Get_activity(APIView):
