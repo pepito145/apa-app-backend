@@ -233,6 +233,7 @@ class Get_activity(APIView):
 
                     seances = Seances.objects.filter(email=user.email)
                     for item in data['body']['series']:
+                        logger.debug("++++++++++commencer parcourir les activités reçus+++++++++++++")
                         a = Activity(
                             user_id = user_id,
                             start_date = datetime.fromtimestamp(item['startdate']),
@@ -241,6 +242,7 @@ class Get_activity(APIView):
                         
                         
                         for seance in seances:
+                            logger.debug("++++++commencer parcourir les séances++++++++++++++++++")
                             if seance.time:  # 确保 time 字段有值
                                 seance_time = seance.time  # 这个是 datetime 类型
                                 startdate_dt = datetime.fromtimestamp(item['startdate']) # 将 Unix 时间戳转换为 datetime
@@ -248,7 +250,7 @@ class Get_activity(APIView):
                                 # 计算时间差
                                 time_difference = abs(seance_time - startdate_dt)
 
-                                if time_difference <= timedelta(minutes=1):
+                                if time_difference <= timedelta(minutes=60):
                                     a.seance_id = seance.id
                                     break
                         a.save()
