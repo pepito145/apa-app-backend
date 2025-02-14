@@ -199,8 +199,6 @@ class get_seance(APIView):
                 time = datetime.fromtimestamp(time).date(),
             )
 
-        seance.save()
-
 class Get_activity(APIView):
     def post(self, request):
         try:
