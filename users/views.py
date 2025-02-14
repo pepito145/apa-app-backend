@@ -185,6 +185,12 @@ class get_seance(APIView):
         totalExercises = request.data.get('totalExercises')
         time = request.data.get('time')
 
+        logger.debug(email)
+        logger.debug(painLevel)
+        logger.debug(difficulty)
+        logger.debug(totalExercises)
+        logger.debug(time)
+
         seance = Seance.objects.create(
                 email=email,
                 painLevel = painLevel,
@@ -192,7 +198,7 @@ class get_seance(APIView):
                 totalExercises = totalExercises,
                 time = datetime.fromtimestamp(time).date(),
             )
-        logger.debug(seance)
+
         seance.save()
 
 class Get_activity(APIView):
