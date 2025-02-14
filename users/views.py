@@ -198,7 +198,7 @@ class get_seance(APIView):
                 totalExercises = totalExercises,
                 time = datetime.fromtimestamp(time),
             )
-
+        return JsonResponse({"status": "success"}, status=200)
 class Get_activity(APIView):
     def post(self, request):
         try:
