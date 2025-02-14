@@ -179,7 +179,7 @@ class post_step(APIView):
         
 class get_seance(APIView):
     def post(self, request):
-        email= request.data.get('painLevel')
+        email= request.data.get('email')
         painLevel = request.data.get('painLevel')
         difficulty = request.data.get('difficulty')
         totalExercises = request.data.get('totalExercises')
