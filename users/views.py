@@ -15,6 +15,8 @@ import logging
 from urllib.parse import unquote
 from rest_framework.exceptions import NotFound
 from django.utils import timezone
+import pytz
+
 
 logger = logging.getLogger('django')
 # Inscription
@@ -246,10 +248,12 @@ class Get_activity(APIView):
                             seance_time = seance.time  # 这个是 datetime 类型
                             startdate_dt = datetime.fromtimestamp(item['startdate']) # 将 Unix 时间戳转换为 datetime
                             logger.debug("startdate_dt")
+                            startdate_dt = startdate_dt.replace(tzinfo=pytz.UTC)
                             logger.debug(startdate_dt)
                             logger.debug("seance_time")
                             logger.debug(seance_time)
                             # 计算时间差
+                            
                             time_difference = abs(seance_time - startdate_dt)
                             logger.debug("time_difference")
                             logger.debug(time_difference)
