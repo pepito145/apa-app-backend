@@ -258,14 +258,14 @@ class Get_activity(APIView):
                     
                     return JsonResponse({"status": "success"}, status=200)
                 except Exception as e:
-                    return {
-                        'error': 'Exception',
+                    return JsonResponse({
+                        'status': 'error',
+                        'message': 'Exception occurred',
                         'details': str(e),
-                        'payload' : payload,
-                        'data' : data,
-                    }
+                        'payload': payload
+                    }, status=500)
             else:
-                pass
+                return JsonResponse({'status': 'error', 'message': 'NOT 16'}, status=400)
         except json.JSONDecodeError:
             return JsonResponse({'status': 'error', 'message': 'Invalid JSON'}, status=400)
         
