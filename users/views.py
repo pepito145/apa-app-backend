@@ -196,7 +196,7 @@ class get_seance(APIView):
                 painLevel = painLevel,
                 difficulty = difficulty,
                 totalExercises = totalExercises,
-                time = datetime.fromtimestamp(time).date(),
+                time = datetime.fromtimestamp(time),
             )
 
 class Get_activity(APIView):
