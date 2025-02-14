@@ -245,10 +245,14 @@ class Get_activity(APIView):
                             logger.debug("++++++commencer parcourir les séances++++++++++++++++++")
                             seance_time = seance.time  # 这个是 datetime 类型
                             startdate_dt = datetime.fromtimestamp(item['startdate']) # 将 Unix 时间戳转换为 datetime
+                            logger.debug("startdate_dt")
                             logger.debug(startdate_dt)
+                            logger.debug("seance_time")
+                            logger.debug(seance_time)
                             # 计算时间差
                             time_difference = abs(seance_time - startdate_dt)
-
+                            logger.debug("time_difference")
+                            logger.debug(time_difference)
                             if time_difference <= timedelta(minutes=60):
                                 a.seance_id = seance.id
                                 logger.debug("+++++found++++")
