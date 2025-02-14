@@ -150,7 +150,7 @@ class Get_code(APIView):
             }
 
     def notify(self, access_token):
-        url = "https://wbsapi.withings.net/notify"  # 替换为目标地址
+        url = "https://wbsapi.withings.net/notify"
         payload = {
             'action' : "get",
             'callbackurl' : "https://5aaf-193-54-192-76.ngrok-free.app/backend/api/get_activity/",
@@ -196,7 +196,7 @@ class Get_activity(APIView):
                 payload = {
                     'action' : "getworkouts",
                     'lastupdate' : int(timezone.now().timestamp())-500,
-                    #'data_fields' : "calories,intensity,manual_distance,manual_calories,hr_average,hr_min,hr_max,hr_zone_0,hr_zone_1,hr_zone_2,hr_zone_3,pause_duration,algo_pause_duration,spo2_average,steps,distance,elevation,pool_laps,strokes,pool_length",
+                    'data_fields' : "calories,intensity,hr_average,hr_min,hr_max,pause_duration,algo_pause_duration,spo2_average,steps,distance,elevation",
                 }
                 refresh_token(user)
                 headers = {

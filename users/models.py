@@ -47,7 +47,7 @@ class Activity(models.Model):
     
 class Physio(models.Model):
     email = models.OneToOneField(UsersInfos, on_delete=models.CASCADE, primary_key=True, related_name='physio')
-    date = models.DateTimeField(default=now)  # Record date
+    date = models.DateTimeField(blank=True, null=True)  # Record date
     steps = models.IntegerField(blank=True, null=True)  # Steps
     calories = models.IntegerField(blank=True, null=True)  # Calories burned
     bpm_avrg = models.IntegerField(blank=True, null=True)  # Average BPM
