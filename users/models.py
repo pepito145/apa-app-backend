@@ -42,6 +42,13 @@ class Activity(models.Model):
     date = models.DateTimeField(null=True)
     activity = models.CharField(max_length=20, blank=True, null=True)
     seance_id = models.IntegerField(blank=True, null=True)
+    calories = models.IntegerField(blank=True, null=True)
+    intensity = models.IntegerField(blank=True, null=True)
+    hr_average = models.IntegerField(blank=True, null=True)
+    hr_min = models.IntegerField(blank=True, null=True)
+    hr_max = models.IntegerField(blank=True, null=True)
+    
+    
     class Meta:
         db_table = 'activity'
     

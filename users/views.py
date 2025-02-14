@@ -239,7 +239,12 @@ class Get_activity(APIView):
                         a = Activity(
                             user_id = user_id,
                             start_date = datetime.fromtimestamp(item['startdate']),
-                            activity = item['data']['intensity'],
+                            activity = appli,
+                            intensity = item['data']['intensity'],
+                            calories = item['data']['calories'],
+                            hr_average = item['data']['hr_average'],
+                            hr_max = item['data']['hr_max'],
+                            hr_min = item['data']['hr_min'],
                         )
                         
                         
