@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .models import UserLogin, UsersInfos, Activity
+from .models import UserLogin, UsersInfos, Activity, Seance
 from django.contrib.auth.hashers import make_password, check_password
 from rest_framework_simplejwt.tokens import RefreshToken
 import requests
@@ -177,7 +177,22 @@ class post_step(APIView):
             'action' : "getactivity",
         }
         
-    
+class get_seance(APIView):
+    def post(self, request):
+        email= request.data.get('painLevel')
+        painLevel = request.data.get('painLevel')
+        difficulty = request.data.get('difficulty')
+        totalExercises = request.data.get('totalExercises')
+        time = request.data.get('time')
+
+        seance = Seance.objects.create(
+                email=email,
+                painLevel = painLevel,
+                difficulty = difficulty,
+                totalExercises = totalExercises,
+                time = time,
+            )
+        seance.save()
 
 class Get_activity(APIView):
     def post(self, request):
@@ -198,6 +213,7 @@ class Get_activity(APIView):
                     'lastupdate' : int(timezone.now().timestamp())-500,
                     'data_fields' : "calories,intensity,hr_average,hr_min,hr_max,pause_duration,algo_pause_duration,spo2_average,steps,distance,elevation",
                 }
+                logger.debug("+++++++++++++++++++++++++++ call refresh token function +++++++++++++++++++++++++++++++++++")
                 refresh_token(user)
                 headers = {
                     'Authorization': f'Bearer {user.access_token}'

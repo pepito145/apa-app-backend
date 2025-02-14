@@ -65,13 +65,15 @@ class BPM(models.Model):
         db_table = 'bpm'
 
 # Sessions model
-class Sessions(models.Model):
-    ses_id = models.AutoField(primary_key=True)  # Unique session ID
-    #ex_id = models.OneToOneField(SessionsHist, on_delete=models.CASCADE, unique=True, related_name='session')
-    ses_difficulty = models.IntegerField()  # Session difficulty
-
+class Seance(models.Model):
+    email = models.EmailField(blank=True, null=True)  # Champ pour l'email
+    painLevel = models.IntegerField(blank=True, null=True)
+    difficulty = models.IntegerField(blank=True, null=True)
+    totalExercises = models.IntegerField(blank=True, null=True)
+    time = models.DateTimeField(blank=True,null=True)
+    
     class Meta:
-        db_table = 'sessions'
+        db_table = 'Seance'
 
 # Exercise sheets model
 class ExerciseSheets(models.Model):
