@@ -75,6 +75,8 @@ class Seance(models.Model):
     class Meta:
         db_table = 'Seance'
 
+class Sessions(models.Model):
+    pass
 # Exercise sheets model
 class ExerciseSheets(models.Model):
     id = models.AutoField(primary_key=True)  # Unique ID for the exercise
