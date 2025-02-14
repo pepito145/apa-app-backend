@@ -65,7 +65,7 @@ class BPM(models.Model):
         db_table = 'bpm'
 
 # Sessions model
-class Seance(models.Model):
+class Seances(models.Model):
     email = models.EmailField(blank=True, null=True)  # Champ pour l'email
     painLevel = models.IntegerField(blank=True, null=True)
     difficulty = models.IntegerField(blank=True, null=True)
@@ -73,10 +73,8 @@ class Seance(models.Model):
     time = models.DateTimeField(blank=True,null=True)
     
     class Meta:
-        db_table = 'Seance'
+        db_table = 'Seances'
 
-class Sessions(models.Model):
-    pass
 # Exercise sheets model
 class ExerciseSheets(models.Model):
     id = models.AutoField(primary_key=True)  # Unique ID for the exercise

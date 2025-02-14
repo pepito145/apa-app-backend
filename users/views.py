@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .models import UserLogin, UsersInfos, Activity, Seance
+from .models import UserLogin, UsersInfos, Activity, Seances
 from django.contrib.auth.hashers import make_password, check_password
 from rest_framework_simplejwt.tokens import RefreshToken
 import requests
@@ -191,7 +191,7 @@ class get_seance(APIView):
         logger.debug(totalExercises)
         logger.debug(time)
 
-        seance = Seance.objects.create(
+        seance = Seances.objects.create(
                 email=email,
                 painLevel = painLevel,
                 difficulty = difficulty,
