@@ -200,7 +200,8 @@ class get_seance(APIView):
                 totalExercises = totalExercises,
                 time = datetime.fromtimestamp(time),
             )
-        return JsonResponse({"status": "success"}, status=200)
+        return JsonResponse({"status": "success", "seance_id": seance.id}, status=200)
+    
 class Get_activity(APIView):
     def post(self, request):
         try:
@@ -262,14 +263,13 @@ class Get_activity(APIView):
                             time_difference = abs(seance_time - startdate_dt)
                             logger.debug("time_difference")
                             logger.debug(time_difference)
-                            if time_difference <= timedelta(minutes=5):
+                            if time_difference <= timedelta(minutes=1):
                                 a.seance_id = seance.id
+                                seance.activity_id=a.id
                                 logger.debug("+++++found++++")
                                 break
                         a.save()
 
-                    
-                    
                     
                     return JsonResponse({"status": "success"}, status=200)
                 except Exception as e:
@@ -284,6 +284,50 @@ class Get_activity(APIView):
         except json.JSONDecodeError:
             return JsonResponse({'status': 'error', 'message': 'Invalid JSON'}, status=400)
         
+
+class RequestActivityView(APIView):
+    def post(self, request):
+        email = request.data.get('email')  # 获取 email
+        if not email:
+            return Response({"error": "Email is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # 获取 Seances 记录
+        seances = Seances.objects.filter(email=email)
+        if not seances.exists():
+            return Response({"error": "No seances found"}, status=status.HTTP_404_NOT_FOUND)
+
+        activity_data = []
+        for seance in seances:
+            activities = Activity.objects.filter(seance_id=seance.id)  # 通过 seance_id 找到 activity
+            activity_list = []
+
+            if activities.exists():
+                for activity in activities:
+                    activity_list.append({
+                        "activity_id": activity.id,
+                        "start_date": activity.start_date,
+                        "end_date": activity.end_date,
+                        "date": activity.date,
+                        "activity": activity.activity,
+                        "calories": activity.calories,
+                        "intensity": activity.intensity,
+                        "hr_average": activity.hr_average,
+                        "hr_min": activity.hr_min,
+                        "hr_max": activity.hr_max,
+                    })
+
+            activity_data.append({
+                "seance_id": seance.id,
+                "email": seance.email,
+                "painLevel": seance.painLevel,
+                "difficulty": seance.difficulty,
+                "totalExercises": seance.totalExercises,
+                "time": seance.time,
+                "activities": activity_list  # 可能为空
+            })
+
+        return Response({"seances": activity_data}, status=status.HTTP_200_OK)
+
 def refresh_token(user):
     time_difference = timezone.now() - user.updated_at
     if time_difference > timedelta(hours=0):

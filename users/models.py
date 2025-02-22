@@ -78,7 +78,7 @@ class Seances(models.Model):
     difficulty = models.IntegerField(blank=True, null=True)
     totalExercises = models.IntegerField(blank=True, null=True)
     time = models.DateTimeField(blank=True,null=True)
-    
+    activity_id = models.IntegerField(blank=True, null=True)
     class Meta:
         db_table = 'Seances'
 
