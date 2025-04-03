@@ -23,7 +23,7 @@ class UserLogin(models.Model):
 
 # Nouveau modèle pour stocker les informations supplémentaires
 class UsersInfos(models.Model):
-    user = models.OneToOneField(UserLogin, on_delete=models.CASCADE, related_name='infos')
+    login = models.OneToOneField(UserLogin, on_delete=models.CASCADE, related_name='infos')
     first_name = models.CharField(max_length=150, blank=True, null=True)
     last_name = models.CharField(max_length=150, blank=True, null=True)
     gender = models.CharField(max_length=20, blank=True, null=True)
