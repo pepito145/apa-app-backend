@@ -36,14 +36,14 @@ class RegisterView(APIView):
 
         try:
             # Crée l'utilisateur
-            user = UserLogin.objects.create(
+            login = UserLogin.objects.create(
                 email=email,
                 password=make_password(password),
             )
 
            # Crée automatiquement une entrée dans UsersInfos
             UsersInfos.objects.create(
-                user=user,
+                login=login,
                 first_name=first_name,
                 last_name=last_name
             )
