@@ -39,15 +39,14 @@ class RegisterView(APIView):
             user = UserLogin.objects.create(
                 email=email,
                 password=make_password(password),
+            )
+
+           # Crée automatiquement une entrée dans UsersInfos
+            UsersInfos.objects.create(
+                user=user,
                 first_name=first_name,
                 last_name=last_name
             )
-
-            # Met à jour l'entrée dans users_infos
-            if hasattr(user, 'infos'):
-                user.infos.first_name = first_name
-                user.infos.last_name = last_name
-                user.infos.save()
 
             return Response({"message": "Utilisateur créé avec succès."}, status=status.HTTP_201_CREATED)
         except Exception as e:
@@ -85,10 +84,6 @@ class Client_id(APIView):
             return Response({'client_id': user.client_id})
         except UserLogin.DoesNotExist:
             return Response({'error': 'User with this email does not exist'}, status=404)
-        
-        
-
-        
         
 class Get_code(APIView):
     def get(self, request):
@@ -169,9 +164,7 @@ class Get_code(APIView):
         except Exception as e:
             return {
                 'error': 'Exception'}
-
-
-            
+     
 class post_step(APIView):
     def get(self, request):
         url = 'https://wbsapi.withings.net/v2/measure'
