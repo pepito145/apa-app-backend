@@ -76,18 +76,20 @@ class LoginView(APIView):
         except UserLogin.DoesNotExist:
             return Response({"error": "Utilisateur introuvable"}, status=status.HTTP_404_NOT_FOUND)
 
+class UpdateProfileView(APIView):
+    def post(self, request):
+        email = request.data.get('email')
+        
+        pass
+
+
         
 class ProfileView(APIView):
     def get(self, request):
         email = request.query_params.get("email")
         
         try:
-            
             user = UserLogin.objects.get(email=email)
-            logger.debug("++++++++++++get user+++++++++++++++++++++++")
-            logger.debug(email)
-            logger.debug(user)
-            logger.debug("++++++++++++get user+++++++++++++++++++++++")
             infos = user.infos
         except UserLogin.DoesNotExist:
             return Response({"error": f"Utilisateur introuvable : {email}"}, status=404)

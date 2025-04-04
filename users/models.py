@@ -30,6 +30,10 @@ class UsersInfos(models.Model):
     age = models.IntegerField(blank=True, null=True)
     weight = models.FloatField(blank=True, null=True)
     ipaq_score = models.IntegerField(blank=True, null=True)  # Permet NULL
+    streak = models.IntegerField(blank=True, null=True)  # Permet NULL
+    XP = models.IntegerField(blank=True, null=True)  # Permet NULL
+    level = models.IntegerField(blank=True, null=True)  # Permet NULL
+
 
 
     class Meta:

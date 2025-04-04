@@ -1,9 +1,11 @@
 from django.urls import path, include
-from .views import RegisterView, LoginView, Client_id, Get_code, Get_activity, get_seance, RequestActivityView,ProfileView
+from .views import RegisterView, LoginView, Client_id, Get_code, Get_activity, get_seance, RequestActivityView,ProfileView,UpdateProfileView
 
 urlpatterns = [
     
-    path('get_profil/',ProfileView.as_view(), name="get_profil"),
+    path('get_profil/', ProfileView.as_view(), name="get_profil"),
+    path('update_profil/', UpdateProfileView.as_view(), name="update_profil"),
+    
     
     path('register/', RegisterView.as_view(), name='register'),
     path('login/', LoginView.as_view(), name='login'),
