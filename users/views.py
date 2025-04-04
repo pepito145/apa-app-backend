@@ -87,7 +87,7 @@ class ProfileView(APIView):
         try:
             user = UserLogin.objects.get(email=email)
         except UserLogin.DoesNotExist:
-            return Response({"error": "Utilisateur introuvable"}, status=404)
+            return Response({"error": "Utilisateur introuvable", "email_from_token": email}, status=404)
 
         infos = user.infos
 
