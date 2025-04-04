@@ -64,14 +64,17 @@ class LoginView(APIView):
         try:
             user = UserLogin.objects.get(email=email)
             if check_password(password, user.password):
+                # Génère un token JWT
+                refresh = RefreshToken.for_user(user)
+                refresh['email'] = user.email
                 return Response({
                     "message": "Login successful",
-                    "email": user.email
+                    "token": str(refresh.access_token)  # Retourne le token d'accès
                 }, status=status.HTTP_200_OK)
             else:
                 return Response({"error": "Mot de passe incorrect"}, status=status.HTTP_401_UNAUTHORIZED)
         except UserLogin.DoesNotExist:
-            return Response({"error": f"Utilisateur introuvable : {email}"}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"error": "Utilisateur introuvable"}, status=status.HTTP_404_NOT_FOUND)
 
         
 class ProfileView(APIView):
