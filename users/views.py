@@ -80,8 +80,21 @@ class UpdateProfileView(APIView):
     def post(self, request):
         email = request.data.get('email')
         
-        pass
-
+        try:
+            user = UserLogin.objects.get(email=email)
+            infos = user.infos
+            infos.first_name = request.data.get("firstName")
+            infos.last_name = request.data.get("lastName")
+            infos.age = request.data.get("age")
+            infos.gender = request.data.get("gender")
+            infos.weight = request.data.get("weight")
+            infos.XP = request.data.get("XP")
+            infos.level = request.data.get("level")
+        except UserLogin.DoesNotExist:
+            return Response({"error": f"Utilisateur introuvable : {email}"}, status=404)
+        except UsersInfos.DoesNotExist:
+            return Response({"error": f"Profil non trouvé pour : {email}"}, status=404)
+        return Response({"message": f"updated"}, status=status.HTTP_200_OK)
 
         
 class ProfileView(APIView):
