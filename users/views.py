@@ -17,6 +17,9 @@ from rest_framework.exceptions import NotFound
 from django.utils import timezone
 import pytz
 from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.tokens import AccessToken
+
+
 
 logger = logging.getLogger('django')
 # Inscription
@@ -77,8 +80,17 @@ class ProfileView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        user = request.user
+        token_str = request.headers.get("Authorization", "").replace("Bearer ", "")
+        token = AccessToken(token_str)
+        email = token.get("email")
+
+        try:
+            user = UserLogin.objects.get(email=email)
+        except UserLogin.DoesNotExist:
+            return Response({"error": "Utilisateur introuvable"}, status=404)
+
         infos = user.infos
+
 
         return Response({
             "first_name": infos.first_name,
