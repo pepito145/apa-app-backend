@@ -78,7 +78,7 @@ class LoginView(APIView):
         
 class ProfileView(APIView):
     #permission_classes = [IsAuthenticated]
-
+    print("start profileView")
     def get(self, request):
         print("start profileview.get")
         token_str = request.headers.get("Authorization", "").replace("Bearer ", "")
