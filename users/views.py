@@ -66,6 +66,7 @@ class LoginView(APIView):
             if check_password(password, user.password):
                 # Génère un token JWT
                 refresh = RefreshToken.for_user(user)
+                refresh['email'] = user.email
                 return Response({
                     "message": "Login successful",
                     "token": str(refresh.access_token)  # Retourne le token d'accès
