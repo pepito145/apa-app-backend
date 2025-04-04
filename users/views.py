@@ -80,6 +80,8 @@ class LoginView(APIView):
 class ProfileView(APIView):
     def get(self, request):
         email = request.query_params.get("email")
+        print(email)
+        """
         try:
             user = UserLogin.objects.get(email=email)
             infos = user.infos
@@ -95,7 +97,8 @@ class ProfileView(APIView):
             "age": infos.age,
             "weight": infos.weight,
             "ipaq_score": infos.ipaq_score,
-        })
+        })"""
+        return Response({"message": "Utilisateur créé avec succès."}, status=status.HTTP_200_OK)
         
         
         
