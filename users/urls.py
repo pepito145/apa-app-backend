@@ -1,7 +1,10 @@
 from django.urls import path, include
-from .views import RegisterView, LoginView, Client_id, Get_code, Get_activity, get_seance, RequestActivityView
+from .views import RegisterView, LoginView, Client_id, Get_code, Get_activity, get_seance, RequestActivityView,ProfileView
 
 urlpatterns = [
+    
+    path('get_profil/',ProfileView.as_view(), name="get_profil"),
+    
     path('register/', RegisterView.as_view(), name='register'),
     path('login/', LoginView.as_view(), name='login'),
     path('client_id/', Client_id.as_view(), name='client_id'),

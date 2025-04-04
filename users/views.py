@@ -16,7 +16,7 @@ from urllib.parse import unquote
 from rest_framework.exceptions import NotFound
 from django.utils import timezone
 import pytz
-
+from rest_framework.permissions import IsAuthenticated
 
 logger = logging.getLogger('django')
 # Inscription
@@ -71,6 +71,27 @@ class LoginView(APIView):
                 return Response({"error": "Mot de passe incorrect"}, status=status.HTTP_401_UNAUTHORIZED)
         except UserLogin.DoesNotExist:
             return Response({"error": "Utilisateur introuvable"}, status=status.HTTP_404_NOT_FOUND)
+
+        
+class ProfileView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        infos = user.infos
+
+        return Response({
+            "first_name": infos.first_name,
+            "last_name": infos.last_name,
+            "gender": infos.gender,
+            "age": infos.age,
+            "weight": infos.weight,
+            "ipaq_score": infos.ipaq_score,
+        })
+        
+        
+        
+        
         
 
 class Client_id(APIView):
