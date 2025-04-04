@@ -80,10 +80,13 @@ class ProfileView(APIView):
     #permission_classes = [IsAuthenticated]
 
     def get(self, request):
+        print("start profileview.get")
         token_str = request.headers.get("Authorization", "").replace("Bearer ", "")
+        print("token_str: ",token_str)
         token = AccessToken(token_str)
+        print("token: ",token)
         email = token.get("email")
-
+        print("email: ",email)
         try:
             user = UserLogin.objects.get(email=email)
         except UserLogin.DoesNotExist:
