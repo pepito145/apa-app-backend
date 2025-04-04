@@ -90,6 +90,7 @@ class UpdateProfileView(APIView):
             infos.weight = request.data.get("weight")
             infos.XP = request.data.get("XP")
             infos.level = request.data.get("level")
+            infos.save()
         except UserLogin.DoesNotExist:
             return Response({"error": f"Utilisateur introuvable : {email}"}, status=404)
         except UsersInfos.DoesNotExist:
