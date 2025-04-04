@@ -82,11 +82,11 @@ class ProfileView(APIView):
         email = request.query_params.get("email")
         try:
             user = UserLogin.objects.get(email=email)
+            infos = user.infos
         except UserLogin.DoesNotExist:
-            return Response({"error": "Utilisateur introuvable", "email_from_token": email, "user: ": user}, status=404)
-
-        infos = user.infos
-
+            return Response({"error": f"Utilisateur introuvable : {email}"}, status=404)
+        except UsersInfos.DoesNotExist:
+            return Response({"error": f"Profil non trouvé pour : {email}"}, status=404)
 
         return Response({
             "first_name": infos.first_name,
