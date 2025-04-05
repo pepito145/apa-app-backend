@@ -84,7 +84,7 @@ class Seances(models.Model):
     time = models.DateTimeField(blank=True,null=True)
     activity_id = models.IntegerField(blank=True, null=True)
     
-    frontend_id = models.IntegerField(blank=True, null=True)
+    frontend_id = models.CharField(max_length=20, blank=True, null=True)
     duration = models.IntegerField(blank=True, null=True)
     
     
