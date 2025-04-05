@@ -265,6 +265,9 @@ class get_seance(APIView):
         difficulty = request.data.get('difficulty')
         totalExercises = request.data.get('totalExercises')
         time = request.data.get('time')
+        frontend_id = request.data.get('frontend_id')
+        duration = request.data.get('duration')
+
 
         logger.debug(email)
         logger.debug(painLevel)
@@ -277,6 +280,8 @@ class get_seance(APIView):
                 painLevel = painLevel,
                 difficulty = difficulty,
                 totalExercises = totalExercises,
+                frontend_id = frontend_id,
+                duration = duration,
                 time = datetime.fromtimestamp(time),
             )
         return JsonResponse({"status": "success", "seance_id": seance.id}, status=200)
