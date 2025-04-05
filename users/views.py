@@ -219,12 +219,44 @@ class Get_code(APIView):
             return {
                 'error': 'Exception'}
      
-class post_step(APIView):
-    def get(self, request):
+class Load_health_data(APIView):
+    def post(self, request):
+        email= request.data.get('email')
+        user = UserLogin.objects.get(email=email)
+        refresh_token(user)
+        access_token = user.access_token
+        startdateymd= request.data.get('startdateymd')
+        enddateymd = request.data.get('enddateymd')
+        
         url = 'https://wbsapi.withings.net/v2/measure'
         payload = {
-            'action' : "getactivity",
+            "action" : "getactivity",
+            "startdateymd" : startdateymd,
+            "enddateymd" : enddateymd,
+            "data_fields" : "steps,distance,calories,hr_average",
         }
+        headers = {
+            'Authorization': 'Bearer ' +access_token,
+            'Content-Type': 'application/json'
+        }
+        
+        
+        try:
+                    
+            response = requests.post(url, json=payload, headers=headers)        
+            data = response.json()
+            logger.debug("+++++++++++++load health data+++++++++++")
+            logger.debug(data)
+            logger.debug("--------------load health data-----------")
+            return JsonResponse({"status": "success", "data": data}, status=200)
+        except Exception as e:
+            return JsonResponse({
+                'status': 'error',
+                'message': 'Exception occurred',
+                'details': str(e),
+                'payload': payload
+            }, status=500)
+
         
 class get_seance(APIView):
     def post(self, request):

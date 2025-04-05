@@ -1,11 +1,11 @@
 from django.urls import path, include
-from .views import RegisterView, LoginView, Client_id, Get_code, Get_activity, get_seance, RequestActivityView,ProfileView,UpdateProfileView
+from .views import RegisterView, LoginView, Client_id, Get_code, Get_activity, get_seance, RequestActivityView,ProfileView,UpdateProfileView, Load_health_data
 
 urlpatterns = [
     
     path('get_profil/', ProfileView.as_view(), name="get_profil"),
     path('update_profil/', UpdateProfileView.as_view(), name="update_profil"),
-    
+    path('load_health_data/', Load_health_data.as_view(), name="load_health_data"),
     
     path('register/', RegisterView.as_view(), name='register'),
     path('login/', LoginView.as_view(), name='login'),
