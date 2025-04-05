@@ -190,6 +190,9 @@ class Get_code(APIView):
             
             return data['access_token']
         except Exception as e:
+            logger.debug(e)
+            logger.debug(payload)
+            logger.debug(data)
             return {
                 'error': 'Exception',
                 'details': str(e),
