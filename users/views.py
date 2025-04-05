@@ -176,7 +176,7 @@ class Get_code(APIView):
             'client_secret' : user.client_secret,
             'grant_type' : "authorization_code",
             'code': code,
-            'redirect_uri' : "https://5aaf-193-54-192-76.ngrok-free.app/backend/api/",
+            'redirect_uri' : "https://cec6-193-54-192-76.ngrok-free.app/backend/api/get_code/",
         }
         try:
             # 发送 POST 请求
