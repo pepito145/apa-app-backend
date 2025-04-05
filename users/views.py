@@ -161,7 +161,7 @@ class Get_code(APIView):
             return Response({'code': code, 'state': state,'access_token':access_token,})
         except UserLogin.DoesNotExist:
             # 用户未找到，返回 404 错误
-            raise NotFound({'error': f'User with id {state} not found','reçu':request.json()})
+            raise NotFound({'error': f'User with id {state} not found','reçu':request.GET.dict()})
 
         except Exception as e:
             # 捕获其他可能的异常，返回 500 错误
