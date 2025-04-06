@@ -401,6 +401,16 @@ class RequestActivityView(APIView):
                         "hr_max": activity.hr_max,
                     })
 
+
+            send_activities_flag = False
+            
+            if not seance.has_been_synced and activities.exists():
+                send_activities_flag = True
+                seance.has_been_synced = True  # 标记为已同步
+                seance.save()
+                        
+            
+            
             activity_data.append({
                 "seance_id": seance.id,
                 "email": seance.email,
@@ -408,7 +418,7 @@ class RequestActivityView(APIView):
                 "difficulty": seance.difficulty,
                 "totalExercises": seance.totalExercises,
                 "time": seance.time,
-                "activities": activity_list  # 可能为空
+                "activities": activity_list if send_activities_flag else [] # 可能为空
             })
 
         return Response({"activities": activity_data}, status=status.HTTP_200_OK)

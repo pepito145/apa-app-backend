@@ -87,7 +87,7 @@ class Seances(models.Model):
     frontend_id = models.CharField(max_length=20, blank=True, null=True)
     duration = models.IntegerField(blank=True, null=True)
     
-    
+    has_been_synced = models.BooleanField(default=False, null=True)
     
     
     class Meta:
