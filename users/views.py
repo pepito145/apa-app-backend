@@ -18,7 +18,7 @@ from django.utils import timezone
 import pytz
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import AccessToken
-
+from django.http import HttpResponse
 
 
 logger = logging.getLogger('django')
@@ -294,14 +294,18 @@ class get_seance(APIView):
         return JsonResponse({"status": "success", "seance_id": seance.id}, status=200)
     
 class Get_activity(APIView):
+    def head(self, request):
+        return HttpResponse(status=200)
     def post(self, request):
+        
         try:
 
             logger.debug(dict(request.POST))
             
             user_id = request.POST.get('userid')
             appli = request.POST.get('appli')
-            date = request.POST.get('date')
+            startdate = request.POST.get('startdate')
+            enddate = request.POST.get('enddate')
             logger.debug("+++++++++++++++++++++++++++ new activity +++++++++++++++++++++++++++++++++++")
             if int(appli)==16:
                 logger.debug("+++++++++++++++++++++++++++ try to pull workout +++++++++++++++++++++++++++++++++++")
