@@ -67,6 +67,7 @@ class LoginView(APIView):
                 # Génère un token JWT
                 refresh = RefreshToken.for_user(user)
                 refresh['email'] = user.email
+                logger.debug(user.access_token)
                 if isinstance(user.access_token, str) and user.access_token.strip():
                     logger.debug("+++++++++++++request notify++++++++++")
                     notify(user.access_token)
