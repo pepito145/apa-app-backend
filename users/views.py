@@ -217,10 +217,12 @@ def notify(access_token):
     try:
         # 发送 GET 请求
         response = requests.get(url, params=payload, headers=headers)        
-        return response.json
+        return response.json()
     except Exception as e:
         return {
-            'error': 'Exception'}
+            'error': 'Exception',
+            'details': str(e)
+        }
      
 class Load_health_data(APIView):
     def post(self, request):
