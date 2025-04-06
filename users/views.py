@@ -344,7 +344,7 @@ class Get_activity(APIView):
                             hr_min = item['data']['hr_min'],
                         )
                         
-                        
+                        sss=None
                         for seance in seances:
                             logger.debug("++++++commencer parcourir les séances++++++++++++++++++")
                             seance_start_time = seance.start_time  # 这个是 datetime 类型
@@ -361,11 +361,13 @@ class Get_activity(APIView):
                             logger.debug(time_difference)
                             if time_difference <= timedelta(minutes=1):
                                 a.seance_id = seance.id
-                                seance.activity_id=a.id
+                                sss=seance
                                 logger.debug("+++++found++++")
                                 break
                         a.save()
-
+                        if sss:
+                            sss.activity_id=a.id
+                            sss.save()
                     
                     return JsonResponse({"status": "success"}, status=200)
                 except Exception as e:
