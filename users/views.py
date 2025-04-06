@@ -206,17 +206,18 @@ class Get_code(APIView):
 def notify(access_token):
     url = "https://wbsapi.withings.net/notify"
     payload = {
-        'action' : "get",
+        'action' : "subscribe",
         'callbackurl' : "https://cec6-193-54-192-76.ngrok-free.app/backend/api/get_activity/",
+        'appli' : 16,
+        
     }
     headers = {
         'Authorization': f'Bearer {access_token}'
     }
     try:
-        # 发送 POST 请求
-        response = requests.post(url, json=payload, headers=headers)        
-        data = response.json()
-        return data
+        # 发送 GET 请求
+        response = requests.get(url, params=payload, headers=headers)        
+        return response.json
     except Exception as e:
         return {
             'error': 'Exception'}
