@@ -283,7 +283,7 @@ class get_seance(APIView):
                 totalExercises = totalExercises,
                 frontend_id = frontend_id,
                 duration = duration,
-                time = datetime.fromtimestamp(time),
+                time = time,
             )
         return JsonResponse({"status": "success", "seance_id": seance.id}, status=200)
     
