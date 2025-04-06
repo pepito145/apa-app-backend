@@ -410,7 +410,7 @@ class RequestActivityView(APIView):
                 "activities": activity_list  # 可能为空
             })
 
-        return Response({"seances": activity_data}, status=status.HTTP_200_OK)
+        return Response({"activities": activity_data}, status=status.HTTP_200_OK)
 
 def refresh_token(user):
     time_difference = timezone.now() - user.updated_at
