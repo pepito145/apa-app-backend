@@ -67,7 +67,10 @@ class LoginView(APIView):
                 # Génère un token JWT
                 refresh = RefreshToken.for_user(user)
                 refresh['email'] = user.email
-                logger.debug(user.access_token)
+                data = logger.debug(user.access_token)
+                logger.debug("+++++++++++++request notify++++++++++")
+                logger.debug(data)
+                logger.debug("+++++++++++++request notify++++++++++")
                 if isinstance(user.access_token, str) and user.access_token.strip():
                     notify(user.access_token)
                 return Response({
@@ -213,10 +216,7 @@ def notify(access_token):
         # 发送 POST 请求
         response = requests.post(url, json=payload, headers=headers)        
         data = response.json()
-        logger.debug("+++++++++++++request notify++++++++++")
-        logger.debug(response)
-        logger.debug("+++++++++++++request notify++++++++++")
-        return None
+        return data
     except Exception as e:
         return {
             'error': 'Exception'}
