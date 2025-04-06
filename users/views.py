@@ -313,7 +313,8 @@ class Get_activity(APIView):
                 url = "https://wbsapi.withings.net/v2/measure"
                 payload = {
                     'action' : "getworkouts",
-                    'lastupdate' : int(timezone.now().timestamp())-500,
+                    'startdate': int(startdate),
+                    'enddate': int(enddate),
                     'data_fields' : "calories,intensity,hr_average,hr_min,hr_max,pause_duration,algo_pause_duration,spo2_average,steps,distance,elevation",
                 }
                 logger.debug("+++++++++++++++++++++++++++ call refresh token function +++++++++++++++++++++++++++++++++++")
