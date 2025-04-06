@@ -265,6 +265,7 @@ class get_seance(APIView):
         difficulty = request.data.get('difficulty')
         totalExercises = request.data.get('totalExercises')
         time = request.data.get('time')
+        time = datetime.fromisoformat(time.replace("Z", "+00:00"))
         frontend_id = request.data.get('frontend_id')
         duration = request.data.get('duration')
 
