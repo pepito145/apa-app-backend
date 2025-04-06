@@ -89,6 +89,7 @@ class Seances(models.Model):
     
     has_been_synced = models.BooleanField(default=False, null=True)
     
+    start_time = models.DateTimeField(blank=True,null=True)
     
     class Meta:
         db_table = 'Seances'

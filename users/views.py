@@ -268,7 +268,7 @@ class get_seance(APIView):
         time = datetime.fromisoformat(time.replace("Z", "+00:00"))
         frontend_id = request.data.get('frontend_id')
         duration = request.data.get('duration')
-
+        start_time = request.data.get("start_time")
 
         logger.debug(email)
         logger.debug(painLevel)
@@ -284,6 +284,7 @@ class get_seance(APIView):
                 frontend_id = frontend_id,
                 duration = duration,
                 time = time,
+                start_time = start_time,
             )
         return JsonResponse({"status": "success", "seance_id": seance.id}, status=200)
     
