@@ -304,8 +304,9 @@ class Get_activity(APIView):
             
             user_id = request.POST.get('userid')
             appli = request.POST.get('appli')
-            startdate = request.POST.get('startdate')
-            enddate = request.POST.get('enddate')
+            date = request.POST.get('date')
+            #startdate = request.POST.get('startdate')
+            #enddate = request.POST.get('enddate')
             logger.debug("+++++++++++++++++++++++++++ new activity +++++++++++++++++++++++++++++++++++")
             if int(appli)==16:
                 logger.debug("+++++++++++++++++++++++++++ try to pull workout +++++++++++++++++++++++++++++++++++")
@@ -313,8 +314,7 @@ class Get_activity(APIView):
                 url = "https://wbsapi.withings.net/v2/measure"
                 payload = {
                     'action' : "getworkouts",
-                    'startdate': int(startdate),
-                    'enddate': int(enddate),
+                    'lastupdate' : int(timezone.now().timestamp())-500,
                     'data_fields' : "calories,intensity,hr_average,hr_min,hr_max,pause_duration,algo_pause_duration,spo2_average,steps,distance,elevation",
                 }
                 logger.debug("+++++++++++++++++++++++++++ call refresh token function +++++++++++++++++++++++++++++++++++")
