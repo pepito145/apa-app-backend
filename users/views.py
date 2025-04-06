@@ -69,7 +69,6 @@ class LoginView(APIView):
                 refresh['email'] = user.email
                 logger.debug(user.access_token)
                 if isinstance(user.access_token, str) and user.access_token.strip():
-                    logger.debug("+++++++++++++request notify++++++++++")
                     notify(user.access_token)
                 return Response({
                     "message": "Login successful",
@@ -214,7 +213,9 @@ def notify(access_token):
         # 发送 POST 请求
         response = requests.post(url, json=payload, headers=headers)        
         data = response.json()
-
+        logger.debug("+++++++++++++request notify++++++++++")
+        logger.debug(response)
+        logger.debug("+++++++++++++request notify++++++++++")
         return None
     except Exception as e:
         return {
