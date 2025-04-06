@@ -378,7 +378,7 @@ class RequestActivityView(APIView):
         # 获取 Seances 记录
         seances = Seances.objects.filter(email=email)
         if not seances.exists():
-            return Response({"error": "No seances found"}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"activities": []}, status=status.HTTP_200_OK)
 
         activity_data = []
         for seance in seances:
