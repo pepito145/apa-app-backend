@@ -396,11 +396,11 @@ class RequestActivityView(APIView):
 
         activity_data = []
         for seance in seances:
-            activities = Activity.objects.filter(seance_id=seance.id)  # 通过 seance_id 找到 activity
             activity_list = []
-
-            if activities.exists():
-                for activity in activities:
+            send_activities_flag = False
+            if seance.activity_id:
+                try:
+                    activity = Activity.objects.get(id=seance.activity_id)
                     activity_list.append({
                         "activity_id": activity.id,
                         "start_date": activity.start_date,
@@ -413,15 +413,14 @@ class RequestActivityView(APIView):
                         "hr_min": activity.hr_min,
                         "hr_max": activity.hr_max,
                     })
+                    
+                    if not seance.has_been_synced:
+                        send_activities_flag = True
+                        seance.has_been_synced = True
+                        seance.save()
+                except Activity.DoesNotExist:
+                    pass  # 如果 activity_id 不合法，忽略
 
-
-            send_activities_flag = False
-            
-            if not seance.has_been_synced and activities.exists():
-                send_activities_flag = True
-                seance.has_been_synced = True  # 标记为已同步
-                seance.save()
-                        
             
             
             activity_data.append({
