@@ -336,6 +336,7 @@ class Get_activity(APIView):
                         a = Activity(
                             user_id = user_id,
                             start_date = datetime.fromtimestamp(item['startdate']),
+                            end_date = datetime.fromtimestamp(item['enddate']),
                             activity = appli,
                             intensity = item['data']['intensity'],
                             calories = item['data']['calories'],
