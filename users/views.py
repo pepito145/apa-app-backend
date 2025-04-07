@@ -396,12 +396,11 @@ class RequestActivityView(APIView):
 
         activity_data = []
         for seance in seances:
-            activity_list = []
             send_activities_flag = False
             if seance.activity_id:
                 try:
                     activity = Activity.objects.get(id=seance.activity_id)
-                    activity_list.append({
+                    activity_fields = {
                         "activity_id": activity.id,
                         "start_date": activity.start_date,
                         "end_date": activity.end_date,
@@ -412,7 +411,7 @@ class RequestActivityView(APIView):
                         "hr_average": activity.hr_average,
                         "hr_min": activity.hr_min,
                         "hr_max": activity.hr_max,
-                    })
+                    }
                     
                     if not seance.has_been_synced:
                         send_activities_flag = True
@@ -430,7 +429,8 @@ class RequestActivityView(APIView):
                 "difficulty": seance.difficulty,
                 "totalExercises": seance.totalExercises,
                 "time": seance.time,
-                "activities": activity_list if send_activities_flag else [] # 可能为空
+                "should_update": send_activities_flag,
+                **(activity_fields if send_activities_flag else {})
             })
 
         return Response({"activities": activity_data}, status=status.HTTP_200_OK)
