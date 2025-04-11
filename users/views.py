@@ -119,12 +119,12 @@ class ProfileView(APIView):
             return Response({"error": f"Profil non trouvé pour : {email}"}, status=404)
 
         return Response({
-            "first_name": infos.first_name,
-            "last_name": infos.last_name,
+            "firstName": infos.first_name,
+            "lastName": infos.last_name,
             "gender": infos.gender,
             "age": infos.age,
             "weight": infos.weight,
-            "ipaq_score": infos.ipaq_score,
+            "ipaqScore": infos.ipaq_score,
         })
         
 class Client_id(APIView):
@@ -419,7 +419,7 @@ class RequestActivityView(APIView):
                         seance.has_been_synced = True
                         seance.save()
                 except Activity.DoesNotExist:
-                    pass  # 如果 activity_id 不合法，忽略
+                    pass
 
             
             
@@ -467,3 +467,19 @@ def refresh_token(user):
                 'payload' : payload,
                 'data' : data,
             }
+            
+            
+def Update_image(APIView):
+    def post(self, request):
+        email= request.data.get('email')
+        pass
+        return Response({"message": "NO"}, status=status.HTTP_200_OK)
+        
+            
+            
+            
+            
+            
+            
+            
+            

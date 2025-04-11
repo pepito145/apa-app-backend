@@ -66,14 +66,7 @@ class Physio(models.Model):
     class Meta:
         db_table = 'physio'
 
-# BPM data model
-class BPM(models.Model):
-    email = models.ForeignKey(Physio, on_delete=models.CASCADE, related_name='bpm')
-    bpm = models.IntegerField(blank=True, null=True)  # BPM value
-    time = models.TimeField()  # Timestamp of the BPM reading
 
-    class Meta:
-        db_table = 'bpm'
 
 # Sessions model
 class Seances(models.Model):
@@ -110,3 +103,13 @@ class Encouragements(models.Model):
 
     class Meta:
         db_table = 'encouragements'
+
+
+# BPM data model
+class BPM(models.Model):
+    email = models.ForeignKey(Physio, on_delete=models.CASCADE, related_name='bpm')
+    bpm = models.IntegerField(blank=True, null=True)  # BPM value
+    time = models.TimeField()  # Timestamp of the BPM reading
+
+    class Meta:
+        db_table = 'bpm'
