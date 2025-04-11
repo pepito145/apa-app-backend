@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import RegisterView, LoginView, Client_id, Get_code, Get_activity, get_seance, RequestActivityView,ProfileView,UpdateProfileView, Load_health_data, Update_image
+from .views import RegisterView, LoginView, Client_id, Get_code, Get_activity, get_seance, RequestActivityView,ProfileView,UpdateProfileView, Load_health_data
 
 urlpatterns = [
     
@@ -15,6 +15,6 @@ urlpatterns = [
     path('get_seance/', get_seance.as_view(), name='get_seance'),
     path('__debug__/', include('debug_toolbar.urls')),
     path('request_activity/', RequestActivityView.as_view(), name='request_activity'),
-    path('update_image/', Update_image.as_view(), name='update_image'),
+
     
 ]
