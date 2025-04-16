@@ -262,7 +262,9 @@ class Load_health_data(APIView):
                 'details': str(e),
                 'payload': payload
             }, status=500)
-
+ 
+ 
+stockholm_tz = pytz.timezone("Europe/Stockholm")
         
 class get_seance(APIView):
     def post(self, request):
@@ -271,16 +273,26 @@ class get_seance(APIView):
         difficulty = request.data.get('difficulty')
         totalExercises = request.data.get('totalExercises')
         time = request.data.get('time')
-        time = datetime.fromisoformat(time.replace("Z", "+00:00"))
+        time = datetime.fromisoformat(time.replace("Z", "+00:00")).astimezone(stockholm_tz)
         frontend_id = request.data.get('frontend_id')
         duration = request.data.get('duration')
         start_time = request.data.get("start_time")
+        start_time = datetime.fromisoformat(start_time.replace("Z", "+00:00")).astimezone(stockholm_tz)
 
         logger.debug(email)
         logger.debug(painLevel)
         logger.debug(difficulty)
         logger.debug(totalExercises)
         logger.debug(time)
+
+        user = UserLogin.objects.filter(email=email)
+        user_id=user.user_id
+        activities = Activity.objects.filter(user_id=user_id)
+
+        for a in activities:
+            a.start_date
+
+
 
         seance = Seances.objects.create(
                 email=email,
@@ -333,7 +345,7 @@ class Get_activity(APIView):
                     seances = Seances.objects.filter(email=user.email)
                     for item in data['body']['series']:
                         
-                        startdate_dt = datetime.fromtimestamp(item['startdate'], tz=pytz.timezone("Europe/Stockholm"))
+                        startdate_dt = datetime.fromtimestamp(item['startdate'], tz=stockholm_tz)
                         if Activity.objects.filter(user_id=user_id, start_date=startdate_dt).exists():
                             continue
 
