@@ -313,7 +313,7 @@ class get_seance(APIView):
             aaa.seance_id = seance.id
             seance.save()
             aaa.save()
-        return JsonResponse({"status": "success", "seance_id": seance.id}, status=200)
+        return JsonResponse({"status": "success", "private_id": seance.private_id}, status=200)
     
 class Get_activity(APIView):
     def head(self, request):
