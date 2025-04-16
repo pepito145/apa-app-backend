@@ -306,18 +306,15 @@ class Get_activity(APIView):
             user_id = request.POST.get('userid')
             appli = request.POST.get('appli')
             date = request.POST.get('date')
-            startdate = request.POST.get('startdate')
-            enddate = request.POST.get('enddate')
             logger.debug("+++++++++++++++++++++++++++ new activity +++++++++++++++++++++++++++++++++++")
-            logger.debug(startdate)
-            logger.debug(enddate)
             if int(appli)==16:
                 logger.debug("+++++++++++++++++++++++++++ try to pull workout +++++++++++++++++++++++++++++++++++")
                 user = UserLogin.objects.get(user_id=user_id)
                 url = "https://wbsapi.withings.net/v2/measure"
                 payload = {
                     'action' : "getworkouts",
-                    'lastupdate' : int(timezone.now().timestamp())-500,
+                    'startdateymd' : date,
+                    "enddateymd" : date,
                     'data_fields' : "calories,intensity,hr_average,hr_min,hr_max,pause_duration,algo_pause_duration,spo2_average,steps,distance,elevation",
                 }
                 logger.debug("+++++++++++++++++++++++++++ call refresh token function +++++++++++++++++++++++++++++++++++")
@@ -335,7 +332,14 @@ class Get_activity(APIView):
 
                     seances = Seances.objects.filter(email=user.email)
                     for item in data['body']['series']:
+                        
+                        startdate_dt = datetime.fromtimestamp(item['startdate'], tz=pytz.timezone("Europe/Stockholm"))
+                        if Activity.objects.filter(user_id=user_id, start_date=startdate_dt).exists():
+                            continue
+
                         logger.debug("++++++++++commencer parcourir les activités reçus+++++++++++++")
+
+                        
                         a = Activity(
                             user_id = user_id,
                             start_date = datetime.fromtimestamp(item['startdate']),
