@@ -453,6 +453,7 @@ class RequestActivityView(APIView):
             
             activity_data.append({
                 "seance_id": seance.id,
+                "private_id": seance.private_id,
                 "email": seance.email,
                 "painLevel": seance.painLevel,
                 "difficulty": seance.difficulty,
