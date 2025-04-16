@@ -78,11 +78,23 @@ class Seances(models.Model):
     activity_id = models.IntegerField(blank=True, null=True)
     
     frontend_id = models.CharField(max_length=20, blank=True, null=True)
+    
+    private_id = models.CharField(max_length=20, blank=True, null=True, unique = True)
+    
     duration = models.IntegerField(blank=True, null=True)
     
     has_been_synced = models.BooleanField(default=False, null=True)
     
     start_time = models.DateTimeField(blank=True,null=True)
+    
+    
+    def save(self, *args, **kwargs):
+        if self.private_id is None:
+            last_id = Seances.objects.aggregate(models.Max('private_id'))['private_id__max'] or 0
+            self.private_id = last_id + 1
+        super().save(*args, **kwargs)
+        
+    
     
     class Meta:
         db_table = 'Seances'
