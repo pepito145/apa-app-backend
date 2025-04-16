@@ -79,7 +79,7 @@ class Seances(models.Model):
     
     frontend_id = models.CharField(max_length=20, blank=True, null=True)
     
-    private_id = models.CharField(max_length=20, blank=True, null=True, unique = True)
+    private_id = models.IntegerField(blank=True, null=True, unique = True)
     
     duration = models.IntegerField(blank=True, null=True)
     
