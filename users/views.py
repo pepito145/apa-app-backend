@@ -306,9 +306,11 @@ class Get_activity(APIView):
             user_id = request.POST.get('userid')
             appli = request.POST.get('appli')
             date = request.POST.get('date')
-            #startdate = request.POST.get('startdate')
-            #enddate = request.POST.get('enddate')
+            startdate = request.POST.get('startdate')
+            enddate = request.POST.get('enddate')
             logger.debug("+++++++++++++++++++++++++++ new activity +++++++++++++++++++++++++++++++++++")
+            logger.debug(startdate)
+            logger.debug(enddate)
             if int(appli)==16:
                 logger.debug("+++++++++++++++++++++++++++ try to pull workout +++++++++++++++++++++++++++++++++++")
                 user = UserLogin.objects.get(user_id=user_id)
