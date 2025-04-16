@@ -288,11 +288,13 @@ class get_seance(APIView):
         user = UserLogin.objects.get(email=email)
         user_id=user.user_id
         activities = Activity.objects.filter(user_id=user_id)
-
+        aaa = None
         for a in activities:
-            a.start_date
-
-
+            
+            time_difference = abs(a.start_date - start_time)
+            if time_difference <= timedelta(minutes=1):
+                aaa = a
+                break
 
         seance = Seances.objects.create(
                 email=email,
@@ -304,6 +306,13 @@ class get_seance(APIView):
                 time = time,
                 start_time = start_time,
             )
+        
+        
+        if aaa:
+            seance.activity_id = aaa.id
+            aaa.seance_id = seance.id
+            seance.save()
+            aaa.save()
         return JsonResponse({"status": "success", "seance_id": seance.id}, status=200)
     
 class Get_activity(APIView):
