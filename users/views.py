@@ -125,6 +125,7 @@ class ProfileView(APIView):
             "age": infos.age,
             "weight": infos.weight,
             "ipaqScore": infos.ipaq_score,
+            "XP": infos.XP,
         })
         
 class Client_id(APIView):
@@ -379,9 +380,9 @@ class Get_activity(APIView):
                         'payload': payload
                     }, status=500)
             else:
-                return JsonResponse({'status': 'error', 'message': 'NOT 16'}, status=400)
+                return JsonResponse({"status": "success"}, status=200)
         except json.JSONDecodeError:
-            return JsonResponse({'status': 'error', 'message': 'Invalid JSON'}, status=400)
+            return JsonResponse({"status": "success"}, status=200)
         
 
 class RequestActivityView(APIView):
