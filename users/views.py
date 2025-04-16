@@ -285,7 +285,7 @@ class get_seance(APIView):
         logger.debug(totalExercises)
         logger.debug(time)
 
-        user = UserLogin.objects.filter(email=email)
+        user = UserLogin.objects.get(email=email)
         user_id=user.user_id
         activities = Activity.objects.filter(user_id=user_id)
 
